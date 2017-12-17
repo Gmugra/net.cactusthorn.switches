@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<switches>
+
+	<switch name="first" on="false"/>
+
+	<switch name="second" on="true">
+		<schedule>
+			<timeinterval from="2017-01-01T00:00:00" to="2018-12-01T10:15:30+03:00"/>
+			<timeinterval to="2019-03-03T00:00:00"/>
+		</schedule>
+		<ip active="true">
+			<address ipv4="192.168.*.100"/>
+			<address ipv4="127.0.0.1"/>
+			<subnet ipv4mask="138.96.58.0/24"/>
+		</ip>
+	</switch>
+
+</switches>
