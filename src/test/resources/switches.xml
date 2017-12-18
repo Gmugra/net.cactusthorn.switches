@@ -51,4 +51,25 @@
 	</switch>
 	<!-- Schedule } -->
 
+	<!-- Hosts { -->
+	<switch name="notActiveHosts" on="true">
+		<hosts active="false">
+			<host name="www.wikipedia.org"/>
+		</hosts>
+	</switch>
+
+	<switch name="activeHosts" on="true">
+		<hosts>
+			<host name="www.wikipedia.org"/>
+		</hosts>
+	</switch>
+
+	<switch name="multipleMaskedHosts" on="true">
+		<hosts>
+			<host name="wikipedia.org"/>
+			<host name="*.wikipedia.org"/>
+		</hosts>
+	</switch>
+	<!-- Hosts } -->
+
 </switches>

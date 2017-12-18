@@ -2,11 +2,13 @@ package net.cactusthorn.switches;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import net.cactusthorn.switches.rules.Switches;
+
 import static org.junit.Assert.*;
 
 import java.io.InputStream;
 import javax.xml.bind.JAXBException;
-import net.cactusthorn.switches.xml.Switches;
 
 public class ExistsAndSimpleTest {
 	
@@ -15,7 +17,7 @@ public class ExistsAndSimpleTest {
 	@BeforeClass
 	public static void init() throws JAXBException {
 		InputStream is = ClassLoader.getSystemResourceAsStream("switches.xml");
-		switches = new SwitchesLoader().load(is);
+		switches = new SwitchesXMLLoader().load(is);
 	}
 
 	@Test

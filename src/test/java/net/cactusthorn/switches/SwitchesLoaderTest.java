@@ -8,7 +8,7 @@ import javax.xml.bind.JAXBException;
 
 import org.junit.Test;
 
-import net.cactusthorn.switches.xml.Switches;
+import net.cactusthorn.switches.rules.Switches;
 
 public class SwitchesLoaderTest {
 
@@ -17,7 +17,7 @@ public class SwitchesLoaderTest {
 		
 		InputStream is = ClassLoader.getSystemResourceAsStream("switches.xml");
 		
-		Switches switches =new SwitchesLoader().load(is);
+		Switches switches =new SwitchesXMLLoader().load(is);
 		
 		assertNotNull(switches);
 	}

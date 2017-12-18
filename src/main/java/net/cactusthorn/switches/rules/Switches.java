@@ -1,4 +1,4 @@
-package net.cactusthorn.switches.xml;
+package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,15 +21,20 @@ public class Switches {
 	public boolean exists(final String switchName ) {
 		return switches.stream().anyMatch(s -> switchName.equals(s.name()));
 	}
-	
+
 	public boolean active(final String switchName ) {
+		
+		return active(switchName, null);
+	}
+	
+	public boolean active(final String switchName, final String hostName ) {
 		
 		Optional<Switch> $switch = switches.stream().filter(s -> switchName.equals(s.name())).findFirst();
 		if (!$switch.isPresent()) return false;
 		
 		final LocalDateTime currentDateTime = LocalDateTime.now();
 		
-		return $switch.get().active(currentDateTime );
+		return $switch.get().active(currentDateTime, hostName );
 	}
 	
 	@Override

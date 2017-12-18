@@ -1,19 +1,19 @@
-package net.cactusthorn.switches.xml;
+package net.cactusthorn.switches.rules;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "address")
+@XmlRootElement(name = "subnet")
 @XmlAccessorType(XmlAccessType.NONE)
-public class IpAddress {
-
-	@XmlAttribute(name = "ipv4")
-	protected String ipv4;
+public class IpSubnet extends Rule {
+	
+	@XmlAttribute(name = "ipv4mask")
+	protected String ipv4mask;
 	
 	@Override
 	public String toString() {
-		return ipv4;
+		return ipv4mask;
 	}
 }

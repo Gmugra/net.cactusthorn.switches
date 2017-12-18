@@ -1,4 +1,4 @@
-package net.cactusthorn.switches.xml;
+package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "schedule")
 @XmlAccessorType(XmlAccessType.NONE)
-class Schedule {
+class Schedule extends Rule {
 
 	private Schedule() {}
 	

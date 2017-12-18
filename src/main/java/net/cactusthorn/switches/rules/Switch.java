@@ -1,4 +1,4 @@
-package net.cactusthorn.switches.xml;
+package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "switch")
 @XmlAccessorType(XmlAccessType.NONE)
-class Switch {
+class Switch extends Rule {
 	
 	private Switch() {}
 
@@ -26,15 +26,24 @@ class Switch {
 	@XmlElement(name = "ip")
 	private Ip ip;
 	
+	@XmlElement(name = "hosts")
+	private Hosts hosts;
+	
 	String name() {
 		return name;
 	}
 
-	boolean active(final LocalDateTime currentDateTime) {
+	boolean active(final LocalDateTime currentDateTime, final String hostName) {
 		
 		if (!on) return false;
 		
+		//currentDateTime can not be null here
 		if (schedule != null && !schedule.active(currentDateTime)) {
+			return false;
+		}
+		
+		//when the hostName is not provided, hosts related rules are ignored
+		if (hostName != null && hosts != null && !hosts.active(hostName)) {
 			return false;
 		}
 		

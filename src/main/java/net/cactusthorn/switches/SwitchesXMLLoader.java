@@ -13,9 +13,9 @@ import javax.xml.validation.SchemaFactory;
 
 import org.xml.sax.SAXException;
 
-import net.cactusthorn.switches.xml.Switches;
+import net.cactusthorn.switches.rules.Switches;
 
-public class SwitchesLoader {
+public class SwitchesXMLLoader {
 	
 	private static final Schema SWITCHES_SCHEMA = loadSchema();
 	
@@ -32,7 +32,7 @@ public class SwitchesLoader {
 
 	public Switches load(InputStream is) throws JAXBException {
 		
-		JAXBContext context = JAXBContext.newInstance(net.cactusthorn.switches.xml.Switches.class);
+		JAXBContext context = JAXBContext.newInstance(net.cactusthorn.switches.rules.Switches.class);
 		
 		Unmarshaller unmarshaller = context.createUnmarshaller();
 		unmarshaller.setSchema(SWITCHES_SCHEMA);

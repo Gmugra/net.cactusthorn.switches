@@ -1,4 +1,4 @@
-package net.cactusthorn.switches.xml;
+package net.cactusthorn.switches.rules;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "ip")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Ip {
+public class Ip extends Rule {
 	
 	@XmlAttribute(name = "active")
 	protected boolean active = true;

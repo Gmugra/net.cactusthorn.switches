@@ -1,4 +1,4 @@
-package net.cactusthorn.switches.xml;
+package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "timeinterval")
 @XmlAccessorType(XmlAccessType.NONE)
-class TimeInterval {
+class TimeInterval extends Rule {
 	
 	private TimeInterval() {}
 
