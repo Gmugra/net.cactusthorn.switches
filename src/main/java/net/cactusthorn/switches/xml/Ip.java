@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Ip {
 	
 	@XmlAttribute(name = "active")
-	protected boolean active;
+	protected boolean active = true;
 	
 	@XmlElement(name = "address")
 	List<IpAddress> addresses;
@@ -21,7 +21,13 @@ public class Ip {
 	@XmlElement(name = "subnet")
 	List<IpSubnet> subnets;
 	
-	
+	public boolean active() {
+		
+		if (!active) return true;
+		
+		//TODO real implementation
+		return false;
+	}
 	
 	@Override
 	public String toString() {

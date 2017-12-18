@@ -3,6 +3,8 @@
 
 	<switch name="first" on="false"/>
 
+	<switch name="simple" on="true"/>
+
 	<switch name="second" on="true">
 		<schedule>
 			<timeinterval from="2017-01-01T00:00:00" to="2018-12-01T10:15:30+03:00"/>
@@ -14,5 +16,39 @@
 			<subnet ipv4mask="138.96.58.0/24"/>
 		</ip>
 	</switch>
+
+	<!-- Schedule { -->
+	<switch name="notActiveSchedule" on="true">
+		<schedule active="false">
+			<timeinterval to="2010-03-03T00:00:00"/>
+		</schedule>
+	</switch>
+
+	<switch name="activePassedSchedule" on="true">
+		<schedule>
+			<timeinterval to="2010-03-03T00:00:00"/>
+		</schedule>
+	</switch>
+
+	<switch name="activeFutureSchedule" on="true">
+		<schedule>
+			<timeinterval from="2050-03-03T00:00:00"/>
+		</schedule>
+	</switch>
+
+	<switch name="activeWorkingSchedule" on="true">
+		<schedule>
+			<timeinterval from="2010-03-03T00:00:00" to="2050-03-03T00:00:00" />
+		</schedule>
+	</switch>
+
+	<switch name="activeMultiSchedule" on="true">
+		<schedule>
+			<timeinterval to="2010-03-03T00:00:00"/>
+			<timeinterval from="2050-03-03T00:00:00"/>
+			<timeinterval from="2015-03-03T00:00:00" to="2020-03-03T00:00:00" />
+		</schedule>
+	</switch>
+	<!-- Schedule } -->
 
 </switches>

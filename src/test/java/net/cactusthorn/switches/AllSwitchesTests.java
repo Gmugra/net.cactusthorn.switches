@@ -6,8 +6,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	LoaderTest.class,
-	ExistsTest.class
+	SwitchesLoaderTest.class,
+	ExistsAndSimpleTest.class,
+	ScheduleTest.class
 })
 public class AllSwitchesTests {
 

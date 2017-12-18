@@ -1,5 +1,6 @@
 package net.cactusthorn.switches.xml;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -10,13 +11,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "schedule")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Schedule {
+class Schedule {
 
+	private Schedule() {}
+	
 	@XmlAttribute(name = "active")
-	protected boolean active;
+	private boolean active = true;
 	
 	@XmlElement(name = "timeinterval")
-	List<TimeInterval> timeIntervals;
+	private List<TimeInterval> timeIntervals;
+	
+	boolean active(final LocalDateTime currentDateTime) {
+		
+		return !active || timeIntervals.stream().anyMatch(t -> t.active(currentDateTime));
+	}
 	
 	@Override
 	public String toString() {

@@ -1,5 +1,6 @@
 package net.cactusthorn.switches.xml;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,8 +13,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public class Switches {
 
+	private Switches() {}
+	
 	@XmlElement(name = "switch")
-	protected List<Switch> switches;
+	private List<Switch> switches;
 	
 	public boolean exists(final String switchName ) {
 		return switches.stream().anyMatch(s -> switchName.equals(s.name()));
@@ -21,10 +24,12 @@ public class Switches {
 	
 	public boolean active(final String switchName ) {
 		
-		Optional<Switch> $switch = switches.stream().filter(s -> switchName.equals(s.name())).findAny();
+		Optional<Switch> $switch = switches.stream().filter(s -> switchName.equals(s.name())).findFirst();
 		if (!$switch.isPresent()) return false;
 		
-		return switches.stream().anyMatch(s -> switchName.equals(s.name()));
+		final LocalDateTime currentDateTime = LocalDateTime.now();
+		
+		return $switch.get().active(currentDateTime );
 	}
 	
 	@Override

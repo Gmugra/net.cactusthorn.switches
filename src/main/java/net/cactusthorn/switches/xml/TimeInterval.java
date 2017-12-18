@@ -10,15 +10,28 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "timeinterval")
 @XmlAccessorType(XmlAccessType.NONE)
-public class TimeInterval {
+class TimeInterval {
+	
+	private TimeInterval() {}
 
 	@XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class, type = LocalDateTime.class)
 	@XmlAttribute(name = "from")
-	protected LocalDateTime from;
+	private LocalDateTime from;
 	
 	@XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class, type = LocalDateTime.class)
 	@XmlAttribute(name = "to")
-	protected LocalDateTime to;
+	private LocalDateTime to;
+	
+	boolean active(final LocalDateTime currentDateTime) {
+		
+		if (from != null && currentDateTime.isBefore(from) ) {
+			return false;
+		}
+		if (to != null && currentDateTime.isAfter(to) ) {
+			return false;
+		}
+		return true;
+	}
 	
 	@Override
 	public String toString() {

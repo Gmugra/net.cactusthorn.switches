@@ -1,5 +1,7 @@
 package net.cactusthorn.switches.xml;
 
+import java.time.LocalDateTime;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -8,26 +10,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "switch")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Switch {
+class Switch {
+	
+	private Switch() {}
 
 	@XmlAttribute(name = "name")
-	protected String name;
+	private String name;
 	
 	@XmlAttribute(name = "on")
-    protected boolean on;
+	private boolean on;
 	
 	@XmlElement(name = "schedule")
-	protected Schedule schedule;
+	private Schedule schedule;
 	
 	@XmlElement(name = "ip")
-	protected Ip ip;
+	private Ip ip;
 	
-	public String name() {
+	String name() {
 		return name;
 	}
 
-	public boolean active() {
+	boolean active(final LocalDateTime currentDateTime) {
+		
 		if (!on) return false;
+		
+		if (schedule != null && !schedule.active(currentDateTime)) {
+			return false;
+		}
 		
 		return true;
 	}

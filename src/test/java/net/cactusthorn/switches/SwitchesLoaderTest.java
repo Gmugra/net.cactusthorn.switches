@@ -10,14 +10,14 @@ import org.junit.Test;
 
 import net.cactusthorn.switches.xml.Switches;
 
-public class LoaderTest {
+public class SwitchesLoaderTest {
 
 	@Test
 	public void loadVerySimple() throws JAXBException {
 		
 		InputStream is = ClassLoader.getSystemResourceAsStream("switches.xml");
 		
-		Switches switches =new Loader().load(is);
+		Switches switches =new SwitchesLoader().load(is);
 		
 		assertNotNull(switches);
 	}
