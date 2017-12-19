@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import net.cactusthorn.switches.SwitchParameter;
+
 @XmlRootElement(name = "timeinterval")
 @XmlAccessorType(XmlAccessType.NONE)
 class TimeInterval extends Rule {
@@ -22,7 +24,8 @@ class TimeInterval extends Rule {
 	@XmlAttribute(name = "to")
 	private LocalDateTime to;
 	
-	boolean active(final LocalDateTime currentDateTime) {
+	@Override
+	public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
 		if (from != null && currentDateTime.isBefore(from) ) {
 			return false;
@@ -31,13 +34,5 @@ class TimeInterval extends Rule {
 			return false;
 		}
 		return true;
-	}
-	
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "(" 
-				+ "from: " + from  + " " 
-				+ "to: " + to
-				+ ")";
 	}
 }

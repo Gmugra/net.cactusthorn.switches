@@ -72,4 +72,35 @@
 	</switch>
 	<!-- Hosts } -->
 
+	<!-- ip { -->
+	<switch name="emptyIP" on="true">
+		<ip></ip>
+	</switch>
+
+	<switch name="notActiveIP" on="true">
+		<ip active="false">
+			<address ipv4="127.0.0.1"/>
+		</ip>
+	</switch>
+
+	<switch name="activeIP" on="true">
+		<ip>
+			<address ipv4="127.0.0.1"/>
+		</ip>
+	</switch>
+
+	<switch name="subnet" on="true">
+		<ip>
+			<subnet ipv4mask="10.1.1.0/24"/>
+		</ip>
+	</switch>
+
+	<switch name="mixedIP" on="true">
+		<ip>
+			<address ipv4="127.0.0.*"/>
+			<subnet ipv4mask="10.1.1.0/24"/>
+		</ip>
+	</switch>
+	<!-- ip } -->
+
 </switches>

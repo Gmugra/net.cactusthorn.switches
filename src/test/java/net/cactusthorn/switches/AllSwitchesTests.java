@@ -12,7 +12,8 @@ import net.cactusthorn.switches.rules.RuleTest;
 	ExistsAndSimpleTest.class,
 	ScheduleTest.class,
 	RuleTest.class,
-	HostsTest.class
+	HostsTest.class,
+	IpTest.class,
 })
 public class AllSwitchesTests {
 

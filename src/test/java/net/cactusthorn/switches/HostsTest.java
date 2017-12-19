@@ -2,14 +2,14 @@ package net.cactusthorn.switches;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import net.cactusthorn.switches.rules.Switches;
-
 import static org.junit.Assert.*;
 
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBException;
+
+import net.cactusthorn.switches.rules.Switches;
+import static net.cactusthorn.switches.SwitchParameter.*;
 
 public class HostsTest {
 
@@ -23,30 +23,26 @@ public class HostsTest {
 	
 	@Test
 	public void notActiveHosts() {
-		assertTrue(switches.active("notActiveHosts", "www.debian.org"));
+		assertTrue(switches.active("notActiveHosts", host("www.debian.org")));
 	}
 	
 	@Test
 	public void activeHosts() {
-		assertFalse(switches.active("activeHosts", "www.debian.org"));
-		assertTrue(switches.active("activeHosts", "www.wikipedia.org"));
+		assertFalse(switches.active("activeHosts", host("www.debian.org")));
+		assertTrue(switches.active("activeHosts", host("www.wikipedia.org")));
 	}
 	
 	@Test
 	public void nullHostName() {
-		
-		//when the hostName is not provided, hosts related rules are ignored
-		assertTrue(switches.active("activeHosts"));
-		assertTrue(switches.active("activeHosts", null));
+		assertFalse(switches.active("activeHosts"));
 	}
-	
 	
 	@Test
 	public void multipleMaskedHosts() {
 		
-		assertTrue(switches.active("multipleMaskedHosts", "wikipedia.org"));
-		assertTrue(switches.active("multipleMaskedHosts", "www.wikipedia.org"));
-		assertTrue(switches.active("multipleMaskedHosts", "en.wikipedia.org"));
-		assertFalse(switches.active("multipleMaskedHosts", "www.debian.org"));
+		assertTrue(switches.active("multipleMaskedHosts", host("wikipedia.org")));
+		assertTrue(switches.active("multipleMaskedHosts", host("www.wikipedia.org")));
+		assertTrue(switches.active("multipleMaskedHosts", host("en.wikipedia.org")));
+		assertFalse(switches.active("multipleMaskedHosts", host("www.debian.org")));
 	}
 }

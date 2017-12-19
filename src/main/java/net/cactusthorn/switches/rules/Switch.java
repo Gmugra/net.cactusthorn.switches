@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.cactusthorn.switches.SwitchParameter;
+
 @XmlRootElement(name = "switch")
 @XmlAccessorType(XmlAccessType.NONE)
 class Switch extends Rule {
@@ -33,7 +35,8 @@ class Switch extends Rule {
 		return name;
 	}
 
-	boolean active(final LocalDateTime currentDateTime, final String hostName) {
+	@Override
+	public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
 		if (!on) return false;
 		
@@ -42,21 +45,14 @@ class Switch extends Rule {
 			return false;
 		}
 		
-		//when the hostName is not provided, hosts related rules are ignored
-		if (hostName != null && hosts != null && !hosts.active(hostName)) {
+		if (hosts != null && !hosts.active(currentDateTime, parameters ) ) {
+			return false;
+		}
+		
+		if (ip != null && !ip.active(currentDateTime, parameters ) ) {
 			return false;
 		}
 		
 		return true;
-	}
-	
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "(" 
-				+ "name: " + name + ", "
-				+ "on: " + on + ", "
-				+ "schedule: " + schedule + ", "
-				+ "ip: " + ip
-				+ ")";
 	}
 }

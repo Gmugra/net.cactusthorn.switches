@@ -6,60 +6,62 @@ import org.junit.Test;
 
 import net.cactusthorn.switches.rules.Rule;
 
+import static net.cactusthorn.switches.rules.Rule.*;
+
 public class RuleTest {
 
 	@Test
 	public void splitOne() {
-		assertEquals("[abc, 1234, wer, ddd]", Rule.splitByDot("abc.1234.wer.ddd").toString());
+		assertEquals("[abc, 1234, wer, ddd]", splitByDot("abc.1234.wer.ddd").toString());
 	}
 	
 	@Test
 	public void splitAlone() {
-		assertEquals("[singletherm]", Rule.splitByDot("singletherm").toString());
+		assertEquals("[singletherm]", splitByDot("singletherm").toString());
 	}
 	
 	@Test
 	public void splitDot() {
-		assertEquals("[, ]", Rule.splitByDot(".").toString());
+		assertEquals("[, ]", splitByDot(".").toString());
 	}
 	
 	@Test
 	public void compareEquals() {
-		assertTrue(Rule.compareWithWildcard("AAA.bbb", "AAA.bbb"));
+		assertTrue(Rule.compareWithWildcard("AAA.bbb", "AAA.bbb", splitByDot("AAA.bbb")));
 	}
 	
 	@Test
 	public void compareWildcard() {
-		assertTrue(Rule.compareWithWildcard("AAA.bbb.CCC", "AAA.*.CCC"));
+		assertTrue(Rule.compareWithWildcard("AAA.bbb.CCC", "AAA.*.CCC", splitByDot("AAA.*.CCC")));
 	}
 	
 	@Test
 	public void compareNotWildcard() {
-		assertFalse(Rule.compareWithWildcard("ZZZ.bbb.CCC", "AAA.*.CCC"));
+		assertFalse(Rule.compareWithWildcard("ZZZ.bbb.CCC", "AAA.*.CCC", splitByDot("AAA.*.CCC")));
 	}
 	
 	@Test
 	public void compareMoreWildcard() {
-		assertFalse(Rule.compareWithWildcard("ZZZ.bbb.CCC.123", "AAA.*.CCC.*"));
+		assertFalse(Rule.compareWithWildcard("ZZZ.bbb.CCC.123", "AAA.*.CCC.*", splitByDot("AAA.*.CCC,*")));
 	}
 	
 	@Test
 	public void compareAll() {
-		assertTrue(Rule.compareWithWildcard("ZZZ.bbb.CCC.123", "*.*.*.*"));
+		assertTrue(Rule.compareWithWildcard("ZZZ.bbb.CCC.123", "*.*.*.*", splitByDot("*.*.*.*")));
 	}
 	
 	@Test
 	public void compareNotEquals() {
-		assertFalse(Rule.compareWithWildcard("ZZZ.bbb.CCC.123", "AAA.bbb"));
+		assertFalse(Rule.compareWithWildcard("ZZZ.bbb.CCC.123", "AAA.bbb", splitByDot("AAA.bbb")));
 	}
 	
 	@Test
 	public void compareNotEqualsNotDot() {
-		assertFalse(Rule.compareWithWildcard("ZZZbbb", "AAA.bbb"));
+		assertFalse(Rule.compareWithWildcard("ZZZbbb", "AAA.bbb", splitByDot("AAA.bbb")));
 	}
 	
 	@Test
 	public void compareNotEqualsNotSameSize() {
-		assertFalse(Rule.compareWithWildcard("ZZZ.bbb", "AAA.bbb.*"));
+		assertFalse(Rule.compareWithWildcard("ZZZ.bbb", "AAA.bbb.*", splitByDot("AAA.bbb.*")));
 	}
 }

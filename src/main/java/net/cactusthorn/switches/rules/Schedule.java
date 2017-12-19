@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.cactusthorn.switches.SwitchParameter;
+
 @XmlRootElement(name = "schedule")
 @XmlAccessorType(XmlAccessType.NONE)
 class Schedule extends Rule {
@@ -21,16 +23,9 @@ class Schedule extends Rule {
 	@XmlElement(name = "timeinterval")
 	private List<TimeInterval> timeIntervals;
 	
-	boolean active(final LocalDateTime currentDateTime) {
+	@Override
+	public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
 		return !active || timeIntervals.stream().anyMatch(t -> t.active(currentDateTime));
-	}
-	
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "("
-				+ "active: " + active + ", "
-				+ timeIntervals
-				+ ")";
 	}
 }

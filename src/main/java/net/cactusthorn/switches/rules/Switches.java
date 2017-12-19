@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.cactusthorn.switches.SwitchParameter;
+
 @XmlRootElement(name = "switches")
 @XmlAccessorType(XmlAccessType.NONE)
 public class Switches {
@@ -21,20 +23,15 @@ public class Switches {
 	public boolean exists(final String switchName ) {
 		return switches.stream().anyMatch(s -> switchName.equals(s.name()));
 	}
-
-	public boolean active(final String switchName ) {
-		
-		return active(switchName, null);
-	}
 	
-	public boolean active(final String switchName, final String hostName ) {
+	public boolean active(final String switchName, final SwitchParameter<?>... parameters ) {
 		
 		Optional<Switch> $switch = switches.stream().filter(s -> switchName.equals(s.name())).findFirst();
 		if (!$switch.isPresent()) return false;
 		
 		final LocalDateTime currentDateTime = LocalDateTime.now();
 		
-		return $switch.get().active(currentDateTime, hostName );
+		return $switch.get().active(currentDateTime, parameters );
 	}
 	
 	@Override
