@@ -45,7 +45,7 @@ public class Switches {
 		List<String> dependenciesNames = $switch.dependencies();
 		if (dependenciesNames.isEmpty() ) return true;
 		for(String depends : dependenciesNames ) {
-			if (active(depends, parameters) ) return true;
+			if (active(depends, currentDateTime, parameters) ) return true;
 		}
 		return false;
 	}

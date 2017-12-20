@@ -62,10 +62,6 @@ class Switch extends Rule {
 			return false;
 		}
 		
-		/*if (dependencies != null && !dependencies.active(currentDateTime, parameters ) ) {
-			return false;
-		}*/
-		
 		return true;
 	}
 }
