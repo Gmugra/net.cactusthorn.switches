@@ -1,6 +1,7 @@
 package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,11 +32,19 @@ class Switch extends Rule {
 	@XmlElement(name = "hosts")
 	private Hosts hosts;
 	
+	@XmlElement(name = "dependencies")
+	private Dependencies dependencies;
+	
 	String name() {
 		return name;
 	}
-
+	
 	@Override
+	List<String> dependencies() {
+		if (dependencies == null )return EMPTY;
+		return dependencies.dependencies();
+	}
+	
 	public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
 		if (!on) return false;
@@ -45,13 +54,17 @@ class Switch extends Rule {
 			return false;
 		}
 		
+		if (ip != null && !ip.active(currentDateTime, parameters ) ) {
+			return false;
+		}
+		
 		if (hosts != null && !hosts.active(currentDateTime, parameters ) ) {
 			return false;
 		}
 		
-		if (ip != null && !ip.active(currentDateTime, parameters ) ) {
+		/*if (dependencies != null && !dependencies.active(currentDateTime, parameters ) ) {
 			return false;
-		}
+		}*/
 		
 		return true;
 	}

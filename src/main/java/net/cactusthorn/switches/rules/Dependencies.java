@@ -2,49 +2,51 @@ package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import net.cactusthorn.switches.SwitchParameter;
-import static net.cactusthorn.switches.SwitchParameter.*;
 
-@XmlRootElement(name = "hosts")
+@XmlRootElement(name = "dependencies")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Hosts extends Rule {
+public class Dependencies extends Rule {
+
+	private Dependencies() {}
 	
-	private Hosts() {}
-	
-	@XmlRootElement(name = "host")
+	@XmlRootElement(name = "depends")
 	@XmlAccessorType(XmlAccessType.NONE)
-	private static class Host extends Rule {
+	private static class Depends extends Rule {
 		
-		private Host() {}
+		private Depends() {}
 		
-		@XmlJavaTypeAdapter(value = RuleSplittedValueAdapter.class, type = SplittedValue.class)
-		@XmlAttribute(name = "name")
-		private SplittedValue host;
-		
+		@XmlAttribute(name = "on")
+		private String switchName;
+
 		@Override
 		public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
-			
-			return find(HOST,parameters).filter(h -> compareWithWildcard((String)h.getValue(), host)).isPresent();
+			throw new UnsupportedOperationException();
 		}
 	}
 	
 	@XmlAttribute(name = "active")
 	private boolean active = true;
 	
-	@XmlElement(name = "host")
-	private List<Host> hosts;
+	@XmlElement(name = "depends")
+	private List<Depends> switches;
 
 	@Override
 	public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
-		
-		return !active || hosts.stream().anyMatch(h -> h.active(currentDateTime, parameters) );
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	List<String> dependencies() {
+		if (!active) return EMPTY;
+		return switches.stream().map(s->s.switchName).collect(Collectors.toList());
 	}
 }

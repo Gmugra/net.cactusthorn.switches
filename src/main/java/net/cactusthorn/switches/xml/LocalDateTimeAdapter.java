@@ -1,4 +1,4 @@
-package net.cactusthorn.switches.rules;
+package net.cactusthorn.switches.xml;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;

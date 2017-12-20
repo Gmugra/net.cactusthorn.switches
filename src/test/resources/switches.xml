@@ -103,4 +103,42 @@
 	</switch>
 	<!-- ip } -->
 
+	<!-- dependencies { -->
+	<switch name="notActiveDependencies" on="true">
+		<dependencies active="false">
+			<depends on="mixedIP"/>
+		</dependencies>
+	</switch>
+
+	<switch name="simpleActiveDependencies" on="true">
+		<dependencies>
+			<depends on="simple"/>
+		</dependencies>
+	</switch>
+
+	<switch name="notActiveBecauseOfDepends" on="true">
+		<dependencies>
+			<depends on="first"/>
+		</dependencies>
+	</switch>
+
+	<switch name="mixedIPDepends" on="true">
+		<dependencies>
+			<depends on="first"/>
+			<depends on="mixedIP"/>
+		</dependencies>
+	</switch>
+
+	<switch name="activeCascade" on="true">
+		<dependencies>
+			<depends on="simpleActiveDependencies"/>
+		</dependencies>
+	</switch>
+
+	<switch name="notActiveCascade" on="true">
+		<dependencies>
+			<depends on="notActiveBecauseOfDepends"/>
+		</dependencies>
+	</switch>
+	<!-- dependencies } -->
 </switches>

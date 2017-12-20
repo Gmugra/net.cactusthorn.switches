@@ -2,47 +2,87 @@ package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import net.cactusthorn.switches.SwitchParameter;
 
 public abstract class Rule {
-
-	//not private for unit-tests
-	protected static final List<String> splitByDot(String str) {
-		
-		List<String> arr = new ArrayList<>();
-		if (str == null) return arr; 
-		
-		int pos = 0;
-		for (int i = 0 ; i < str.length(); i++ ) {
-			
-			if (str.charAt(i) == '.' ) {
-				arr.add(str.substring(pos, i) );
-				pos = i + 1;
-			}
-		}
-		arr.add(str.substring(pos ) );
 	
-		return arr;
+	static final class RuleSplittedValueAdapter extends XmlAdapter<String,SplittedValue> {
+
+		@Override
+		public SplittedValue unmarshal(String value) throws Exception {
+			return new SplittedValue(value);
+		}
+
+		@Override
+		public String marshal(SplittedValue value) throws Exception {
+			return value.original;
+		}
 	}
 	
-	protected static final boolean compareWithWildcard(String source, String masked, List<String> maskedSplitted) {
+	final static class SplittedValue {
 		
-		if (source.equals(masked)) return true;
+		private String original;
+		List<String> splitted;
 		
-		if (source.indexOf('.') == -1 || masked.indexOf('*') == -1) return false; 
+		SplittedValue(String original) {
+			this.original = original;
+			splitByDot();
+		}
 		
-		List<String> sourceParts = splitByDot(source);
-		List<String> maskedParts = splitByDot(masked);
+		private final void splitByDot() {
+			
+			if (original == null) {
+				splitted = Collections.emptyList();
+				return; 
+			}
+			
+			List<String> parts = new ArrayList<>();
+			
+			int pos = 0;
+			for (int i = 0 ; i < original.length(); i++ ) {
+				
+				if (original.charAt(i) == '.' ) {
+					parts.add(original.substring(pos, i) );
+					pos = i + 1;
+				}
+			}
+			parts.add(original.substring(pos ) );
+			splitted = Collections.unmodifiableList(parts);
+		}
+
+		@Override
+		public String toString() {
+			return splitted.toString();
+		}
+	}
+	
+	protected final static boolean compareWithWildcard(String source, SplittedValue masked) {
 		
-		if (sourceParts.size() != maskedParts.size()) return false;
+		if (source.equals(masked.original)) return true;
 		
-		for (int i = 0 ; i < sourceParts.size(); i++ ) {
-			if (!sourceParts.get(i).equals(maskedParts.get(i) ) && !"*".equals(maskedParts.get(i) ) ) return false; 
+		if (source.indexOf('.') == -1 || masked.original.indexOf('*') == -1) return false; 
+		
+		SplittedValue sourceSplitted = new Rule.SplittedValue(source);
+
+		if (sourceSplitted.splitted.size() != masked.splitted.size()) return false;
+		
+		for (int i = 0 ; i < sourceSplitted.splitted.size(); i++ ) {
+			if (	!sourceSplitted.splitted.get(i).equals(masked.splitted.get(i) ) 
+					&& !"*".equals(masked.splitted.get(i) ) ) return false; 
 		}
 		
 		return true;
+	}
+	
+	static final List<String> EMPTY = Collections.emptyList();
+	
+	List<String> dependencies() {
+		return EMPTY;
 	}
 	
 	public abstract boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters);
