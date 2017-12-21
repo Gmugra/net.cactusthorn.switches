@@ -23,26 +23,26 @@ public class ScheduleTest {
 	
 	@Test
 	public void notActiveSchedule() {
-		assertTrue(switches.active("notActiveSchedule"));
+		assertTrue(switches.turnedOn("notActiveSchedule"));
 	}
 	
 	@Test
 	public void activePassedSchedule() {
-		assertFalse(switches.active("activePassedSchedule"));
+		assertFalse(switches.turnedOn("activePassedSchedule"));
 	}
 	
 	@Test
 	public void activeFutureSchedule() {
-		assertFalse(switches.active("activeFutureSchedule"));
+		assertFalse(switches.turnedOn("activeFutureSchedule"));
 	}
 
 	@Test
 	public void activeWorkingSchedule() {
-		assertTrue(switches.active("activeWorkingSchedule"));
+		assertTrue(switches.turnedOn("activeWorkingSchedule"));
 	}
 	
 	@Test
 	public void activeMultiSchedule() {
-		assertTrue(switches.active("activeMultiSchedule"));
+		assertTrue(switches.turnedOn("activeMultiSchedule"));
 	}
 }

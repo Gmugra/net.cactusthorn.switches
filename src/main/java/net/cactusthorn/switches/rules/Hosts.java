@@ -15,7 +15,7 @@ import static net.cactusthorn.switches.SwitchParameter.*;
 
 @XmlRootElement(name = "hosts")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Hosts extends Rule {
+class Hosts extends Rule {
 	
 	private Hosts() {}
 	
@@ -30,7 +30,7 @@ public class Hosts extends Rule {
 		private SplittedValue host;
 		
 		@Override
-		public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+		protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 			
 			return find(HOST,parameters).filter(h -> compareWithWildcard((String)h.getValue(), host)).isPresent();
 		}
@@ -43,7 +43,7 @@ public class Hosts extends Rule {
 	private List<Host> hosts;
 
 	@Override
-	public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+	protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
 		return !active || hosts.stream().anyMatch(h -> h.active(currentDateTime, parameters) );
 	}

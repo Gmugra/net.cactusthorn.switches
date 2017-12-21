@@ -24,29 +24,37 @@ public class Switches {
 		return switches.stream().anyMatch(s -> switchName.equals(s.name()));
 	}
 	
-	public boolean active(final String switchName, final SwitchParameter<?>... parameters ) {
+	public boolean turnedOn(final String switchName, final SwitchParameter<?>... parameters ) {
 		
 		LocalDateTime currentDateTime = LocalDateTime.now();
-		return active(switchName, currentDateTime, parameters);
+		return turnedOn(switchName, currentDateTime, parameters);
 	}
 	
-	private boolean active(final String switchName, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters ) {
+	private boolean turnedOn(final String switchName, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters ) {
 		
 		Optional<Switch> $switch = switches.stream().filter(s -> switchName.equals(s.name())).findFirst();
 		if (!$switch.isPresent()) return false;
 		
+		//any one dependency must be turned on
 		if (!activeDependency($switch.get(), currentDateTime, parameters) ) return false;
+		
+		//no one alternative must be turned on
+		if (activeAlternative($switch.get(), currentDateTime, parameters) ) return false;
 		
 		return $switch.get().active(currentDateTime, parameters );
 	}
 	
 	private boolean activeDependency(Switch $switch, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
-		
+	
 		List<String> dependenciesNames = $switch.dependencies();
 		if (dependenciesNames.isEmpty() ) return true;
-		for(String depends : dependenciesNames ) {
-			if (active(depends, currentDateTime, parameters) ) return true;
-		}
-		return false;
+		return dependenciesNames.stream().anyMatch(d -> turnedOn(d, currentDateTime, parameters) );
+	}
+	
+	private boolean activeAlternative(Switch $switch, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+		
+		List<String> alternativeNames = $switch.alternatives();
+		if (alternativeNames.isEmpty() ) return false;
+		return alternativeNames.stream().anyMatch(a -> turnedOn(a, currentDateTime, parameters));
 	}
 }

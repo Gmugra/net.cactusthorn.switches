@@ -10,21 +10,22 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import net.cactusthorn.switches.SwitchParameter;
 
-@XmlRootElement(name = "dependencies")
+@XmlRootElement(name = "alternatives")
 @XmlAccessorType(XmlAccessType.NONE)
-class Dependencies extends Rule {
+class Alternatives extends Rule {
 
-	private Dependencies() {}
+	private Alternatives() {}
 	
-	@XmlRootElement(name = "depends")
+	@XmlRootElement(name = "alternative")
 	@XmlAccessorType(XmlAccessType.NONE)
-	private static class Depends extends Rule {
+	private static class Alternative extends Rule {
 		
-		private Depends() {}
+		private Alternative() {}
 		
-		@XmlAttribute(name = "on")
+		@XmlAttribute(name = "to")
 		private String switchName;
 
 		@Override
@@ -36,10 +37,10 @@ class Dependencies extends Rule {
 	@XmlAttribute(name = "active")
 	private boolean active = true;
 	
-	@XmlElement(name = "depends")
-	private List<Depends> depends;
+	@XmlElement(name = "alternative")
+	private List<Alternative> alternative;
 	
-	private List<String> dependsNames;
+	private List<String> alternativeNames;
 
 	@Override
 	protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
@@ -47,14 +48,14 @@ class Dependencies extends Rule {
 	}
 	
 	@Override
-	protected List<String> dependencies() {
+	protected List<String> alternatives() {
 		if (!active) return EMPTY_STRING_LIST;
-		return dependsNames;
+		return alternativeNames;
 	}
-	
+
 	//Unmarshal Event Callbacks : https://docs.oracle.com/javaee/6/api/javax/xml/bind/Unmarshaller.html
 	void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
 		String switchName = ((Switch)parent).name();
-		dependsNames = depends.stream().filter(d -> !switchName.equals(d.switchName)).map(d -> d.switchName).collect(Collectors.toList());
+		alternativeNames = alternative.stream().filter(a -> !switchName.equals(a.switchName)).map(a -> a.switchName).collect(Collectors.toList());
 	}
 }

@@ -23,26 +23,26 @@ public class HostsTest {
 	
 	@Test
 	public void notActiveHosts() {
-		assertTrue(switches.active("notActiveHosts", host("www.debian.org")));
+		assertTrue(switches.turnedOn("notActiveHosts", host("www.debian.org")));
 	}
 	
 	@Test
 	public void activeHosts() {
-		assertFalse(switches.active("activeHosts", host("www.debian.org")));
-		assertTrue(switches.active("activeHosts", host("www.wikipedia.org")));
+		assertFalse(switches.turnedOn("activeHosts", host("www.debian.org")));
+		assertTrue(switches.turnedOn("activeHosts", host("www.wikipedia.org")));
 	}
 	
 	@Test
 	public void nullHostName() {
-		assertFalse(switches.active("activeHosts"));
+		assertFalse(switches.turnedOn("activeHosts"));
 	}
 	
 	@Test
 	public void multipleMaskedHosts() {
 		
-		assertTrue(switches.active("multipleMaskedHosts", host("wikipedia.org")));
-		assertTrue(switches.active("multipleMaskedHosts", host("www.wikipedia.org")));
-		assertTrue(switches.active("multipleMaskedHosts", host("en.wikipedia.org")));
-		assertFalse(switches.active("multipleMaskedHosts", host("www.debian.org")));
+		assertTrue(switches.turnedOn("multipleMaskedHosts", host("wikipedia.org")));
+		assertTrue(switches.turnedOn("multipleMaskedHosts", host("www.wikipedia.org")));
+		assertTrue(switches.turnedOn("multipleMaskedHosts", host("en.wikipedia.org")));
+		assertFalse(switches.turnedOn("multipleMaskedHosts", host("www.debian.org")));
 	}
 }

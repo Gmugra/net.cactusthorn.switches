@@ -79,11 +79,15 @@ public abstract class Rule {
 		return true;
 	}
 	
-	static final List<String> EMPTY = Collections.emptyList();
+	protected static final List<String> EMPTY_STRING_LIST = Collections.emptyList();
 	
-	List<String> dependencies() {
-		return EMPTY;
+	protected List<String> dependencies() {
+		return EMPTY_STRING_LIST;
 	}
 	
-	public abstract boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters);
+	protected List<String> alternatives() {
+		return EMPTY_STRING_LIST;
+	}
+	
+	protected abstract boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters);
 }

@@ -23,32 +23,32 @@ public class IpTest {
 	
 	@Test
 	public void emptyIP() {
-		assertTrue(switches.active("emptyIP"));
+		assertTrue(switches.turnedOn("emptyIP"));
 	}
 	
 	@Test
 	public void notActiveIP() {
-		assertTrue(switches.active("notActiveIP", ip("127.0.0.10")));
+		assertTrue(switches.turnedOn("notActiveIP", ip("127.0.0.10")));
 	}
 	
 	@Test
 	public void activeIP() {
-		assertTrue(switches.active("activeIP", ip("127.0.0.1")));
-		assertFalse(switches.active("activeIP", ip("127.0.1.1")));
+		assertTrue(switches.turnedOn("activeIP", ip("127.0.0.1")));
+		assertFalse(switches.turnedOn("activeIP", ip("127.0.1.1")));
 	}
 	
 	@Test
 	public void subnet() {
-		assertFalse(switches.active("subnet", ip("127.0.0.1")));
-		assertTrue(switches.active("subnet", ip("10.1.1.99")));
-		assertTrue(switches.active("subnet", ip("10.1.1.50")));
+		assertFalse(switches.turnedOn("subnet", ip("127.0.0.1")));
+		assertTrue(switches.turnedOn("subnet", ip("10.1.1.99")));
+		assertTrue(switches.turnedOn("subnet", ip("10.1.1.50")));
 	}
 	
 	@Test
 	public void mixed() {
-		assertTrue(switches.active("mixedIP", ip("127.0.0.33")));
-		assertTrue(switches.active("mixedIP", ip("10.1.1.99")));
-		assertTrue(switches.active("mixedIP", ip("10.1.1.50")));
-		assertFalse(switches.active("mixedIP", ip("127.0.1.10")));
+		assertTrue(switches.turnedOn("mixedIP", ip("127.0.0.33")));
+		assertTrue(switches.turnedOn("mixedIP", ip("10.1.1.99")));
+		assertTrue(switches.turnedOn("mixedIP", ip("10.1.1.50")));
+		assertFalse(switches.turnedOn("mixedIP", ip("127.0.1.10")));
 	}
 }

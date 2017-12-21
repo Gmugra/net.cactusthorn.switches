@@ -34,7 +34,7 @@ class Schedule extends Rule {
 		private LocalDateTime to;
 		
 		@Override
-		public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+		protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 			
 			if (from != null && currentDateTime.isBefore(from) ) {
 				return false;
@@ -53,7 +53,7 @@ class Schedule extends Rule {
 	private List<TimeInterval> timeIntervals;
 	
 	@Override
-	public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+	protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
 		return !active || timeIntervals.stream().anyMatch(t -> t.active(currentDateTime));
 	}

@@ -18,7 +18,7 @@ import net.cactusthorn.switches.xml.SubnetAdapter;
 
 @XmlRootElement(name = "ip")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Ip extends Rule {
+class Ip extends Rule {
 	
 	private Ip() {}
 	
@@ -50,7 +50,7 @@ public class Ip extends Rule {
 		private SubnetUtils.SubnetInfo subnetInfo;
 		
 		@Override
-		public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+		protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 			return find(IP,parameters).filter(ip -> subnetInfo.isInRange((String)ip.getValue())).isPresent();
 		}
 	}
@@ -65,7 +65,7 @@ public class Ip extends Rule {
 	List<IpSubnet> subnets;
 	
 	@Override
-	public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+	protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
 		if (!active || (addresses == null && subnets == null) ) return true;
 		

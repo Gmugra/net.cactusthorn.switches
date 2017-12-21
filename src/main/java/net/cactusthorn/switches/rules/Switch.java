@@ -35,17 +35,26 @@ class Switch extends Rule {
 	@XmlElement(name = "dependencies")
 	private Dependencies dependencies;
 	
-	String name() {
+	@XmlElement(name = "alternatives")
+	private Alternatives alternatives;
+	
+	public String name() {
 		return name;
 	}
 	
 	@Override
-	List<String> dependencies() {
-		if (dependencies == null )return EMPTY;
+	protected List<String> dependencies() {
+		if (dependencies == null )return EMPTY_STRING_LIST;
 		return dependencies.dependencies();
 	}
 	
-	public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+	@Override
+	protected List<String> alternatives() {
+		if (alternatives == null )return EMPTY_STRING_LIST;
+		return alternatives.alternatives();
+	}
+	
+	protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
 		if (!on) return false;
 		

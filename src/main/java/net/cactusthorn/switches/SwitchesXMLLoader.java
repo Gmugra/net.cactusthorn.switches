@@ -29,7 +29,7 @@ public class SwitchesXMLLoader {
 			throw new ExceptionInInitializerError(saxe);
 		}
 	}
-
+	
 	public Switches load(InputStream is) throws JAXBException {
 		
 		JAXBContext context = JAXBContext.newInstance(net.cactusthorn.switches.rules.Switches.class);

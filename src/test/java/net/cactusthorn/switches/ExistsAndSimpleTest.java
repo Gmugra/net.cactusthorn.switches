@@ -37,11 +37,11 @@ public class ExistsAndSimpleTest {
 	
 	@Test
 	public void simple() {
-		assertTrue(switches.active("simple"));
+		assertTrue(switches.turnedOn("simple"));
 	}
 	
 	@Test
 	public void first() {
-		assertFalse(switches.active("first"));
+		assertFalse(switches.turnedOn("first"));
 	}
 }
