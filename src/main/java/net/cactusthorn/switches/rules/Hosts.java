@@ -1,7 +1,7 @@
 package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import net.cactusthorn.switches.SwitchParameter;
+
 import static net.cactusthorn.switches.SwitchParameter.*;
 
 @XmlRootElement(name = "hosts")
@@ -34,13 +35,31 @@ class Hosts extends Rule {
 			
 			return find(HOST,parameters).filter(h -> compareWithWildcard((String)h.getValue(), host)).isPresent();
 		}
+		
+		@Override
+		public String toString() {
+			return host.splitted.toString();
+		}
+
+		@Override
+		public int hashCode() {
+			return host.hashCode();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == this) return true;
+			if (!(obj instanceof Host)) return false;
+			Host other = (Host) obj;
+			return host.equals(other.host);
+		}
 	}
 	
 	@XmlAttribute(name = "active")
 	private boolean active = true;
 	
 	@XmlElement(name = "host")
-	private List<Host> hosts;
+	private Set<Host> hosts;
 
 	@Override
 	protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {

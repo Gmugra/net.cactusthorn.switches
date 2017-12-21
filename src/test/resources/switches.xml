@@ -9,6 +9,7 @@
 		<schedule>
 			<timeinterval from="2017-01-01T00:00:00" to="2018-12-01T10:15:30+03:00"/>
 			<timeinterval to="2019-03-03T00:00:00"/>
+			<timeinterval to="2019-03-03T00:00:00"/>
 		</schedule>
 		<ip active="true">
 			<address ipv4="192.168.*.100"/>
@@ -85,7 +86,8 @@
 
 	<switch name="activeIP" on="true">
 		<ip>
-			<address ipv4="127.0.0.1"/>
+			<address ipv4="127.0.0.23"/>
+			<address ipv4="127.0.0.23"/>
 		</ip>
 	</switch>
 
@@ -98,6 +100,7 @@
 	<switch name="mixedIP" on="true">
 		<ip>
 			<address ipv4="127.0.0.*"/>
+			<subnet ipv4mask="10.1.1.0/24"/>
 			<subnet ipv4mask="10.1.1.0/24"/>
 		</ip>
 	</switch>
@@ -185,6 +188,7 @@
 			<subnet ipv4mask="10.1.1.0/24"/>
 		</ip>
 		<hosts>
+			<host name="wikipedia.org"/>
 			<host name="wikipedia.org"/>
 			<host name="*.wikipedia.org"/>
 			<host name="www.debian.org"/>

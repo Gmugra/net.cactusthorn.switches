@@ -2,6 +2,7 @@ package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.xml.bind.Unmarshaller;
@@ -39,7 +40,7 @@ class Dependencies extends Rule {
 	@XmlElement(name = "depends")
 	private List<Depends> depends;
 	
-	private List<String> dependsNames;
+	private Set<String> dependsNames;
 
 	@Override
 	protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
@@ -47,14 +48,14 @@ class Dependencies extends Rule {
 	}
 	
 	@Override
-	protected List<String> dependencies() {
-		if (!active) return EMPTY_STRING_LIST;
+	protected Set<String> dependencies() {
+		if (!active) return EMPTY_STRING_SET;
 		return dependsNames;
 	}
 	
 	//Unmarshal Event Callbacks : https://docs.oracle.com/javaee/6/api/javax/xml/bind/Unmarshaller.html
 	void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
 		String switchName = ((Switch)parent).name();
-		dependsNames = depends.stream().filter(d -> !switchName.equals(d.switchName)).map(d -> d.switchName).collect(Collectors.toList());
+		dependsNames = depends.stream().filter(d -> !switchName.equals(d.switchName)).map(d -> d.switchName).collect(Collectors.toSet());
 	}
 }

@@ -33,7 +33,7 @@ public class IpTest {
 	
 	@Test
 	public void activeIP() {
-		assertTrue(switches.turnedOn("activeIP", ip("127.0.0.1")));
+		assertTrue(switches.turnedOn("activeIP", ip("127.0.0.23")));
 		assertFalse(switches.turnedOn("activeIP", ip("127.0.1.1")));
 	}
 	

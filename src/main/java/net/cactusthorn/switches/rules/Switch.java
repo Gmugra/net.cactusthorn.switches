@@ -1,7 +1,7 @@
 package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -43,14 +43,14 @@ class Switch extends Rule {
 	}
 	
 	@Override
-	protected List<String> dependencies() {
-		if (dependencies == null )return EMPTY_STRING_LIST;
+	protected Set<String> dependencies() {
+		if (dependencies == null )return EMPTY_STRING_SET;
 		return dependencies.dependencies();
 	}
 	
 	@Override
-	protected List<String> alternatives() {
-		if (alternatives == null )return EMPTY_STRING_LIST;
+	protected Set<String> alternatives() {
+		if (alternatives == null )return EMPTY_STRING_SET;
 		return alternatives.alternatives();
 	}
 	

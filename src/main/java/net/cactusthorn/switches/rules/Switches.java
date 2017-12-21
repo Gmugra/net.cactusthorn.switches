@@ -3,6 +3,7 @@ package net.cactusthorn.switches.rules;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -46,14 +47,14 @@ public class Switches {
 	
 	private boolean activeDependency(Switch $switch, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 	
-		List<String> dependenciesNames = $switch.dependencies();
+		Set<String> dependenciesNames = $switch.dependencies();
 		if (dependenciesNames.isEmpty() ) return true;
 		return dependenciesNames.stream().anyMatch(d -> turnedOn(d, currentDateTime, parameters) );
 	}
 	
 	private boolean activeAlternative(Switch $switch, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
-		List<String> alternativeNames = $switch.alternatives();
+		Set<String> alternativeNames = $switch.alternatives();
 		if (alternativeNames.isEmpty() ) return false;
 		return alternativeNames.stream().anyMatch(a -> turnedOn(a, currentDateTime, parameters));
 	}

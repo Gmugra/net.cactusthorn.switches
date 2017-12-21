@@ -40,7 +40,7 @@ Switches.xml example:
 		</dependencies>
 		<alternatives>
 			<alternative to="first"/>
-			<alternative to="first"/>
+			<alternative to="mega"/>
 		</alternatives>
 	</switch>
 

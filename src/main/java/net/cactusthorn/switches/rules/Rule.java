@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
@@ -59,6 +60,19 @@ public abstract class Rule {
 		public String toString() {
 			return splitted.toString();
 		}
+
+		@Override 
+		public boolean equals(Object obj) {
+			if (obj == this) return true;
+			if (!(obj instanceof SplittedValue)) return false;
+			SplittedValue other = (SplittedValue) obj;
+			return original.equals(other.original);
+		}
+
+		@Override
+		public int hashCode() {
+			return original.hashCode();
+		}
 	}
 	
 	protected final static boolean compareWithWildcard(String source, SplittedValue masked) {
@@ -79,14 +93,14 @@ public abstract class Rule {
 		return true;
 	}
 	
-	protected static final List<String> EMPTY_STRING_LIST = Collections.emptyList();
+	protected static final Set<String> EMPTY_STRING_SET = Collections.emptySet();
 	
-	protected List<String> dependencies() {
-		return EMPTY_STRING_LIST;
+	protected Set<String> dependencies() {
+		return EMPTY_STRING_SET;
 	}
 	
-	protected List<String> alternatives() {
-		return EMPTY_STRING_LIST;
+	protected Set<String> alternatives() {
+		return EMPTY_STRING_SET;
 	}
 	
 	protected abstract boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters);
