@@ -2,8 +2,7 @@
 # net.cactusthorn.switches
 ---
 
-![alt text][logo]
-[logo]:https://img.shields.io/github/license/mashape/apistatus.svg "BSD-2-Clause"
+![alt text](https://img.shields.io/github/license/mashape/apistatus.svg "BSD-2-Clause")
 
 ---
 TODO
