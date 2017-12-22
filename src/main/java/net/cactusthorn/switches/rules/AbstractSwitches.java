@@ -59,7 +59,7 @@ public abstract class AbstractSwitches implements Switches {
 		
 		Set<String> alternativeNames = $switch.alternatives();
 		if (alternativeNames.isEmpty() ) return false;
-		return alternativeNames.stream().anyMatch(a -> turnedOnWithNot(a, currentDateTime, parameters));
+		return alternativeNames.stream().anyMatch(a -> turnedOn(a, currentDateTime, parameters));
 	}
 	
 }
