@@ -67,7 +67,7 @@ It's relative trivial task.
 
 1. Need to extend XSD-schema by new element(s).
 For example, I created new schema **custom-switches.xsd** which provide new element "values":
-https://github.com/Gmugra/net.cactusthorn.switches/blob/master/src/test/resources/custom-switches.xml
+https://github.com/Gmugra/net.cactusthorn.switches/blob/master/src/test/resources/custom-switches.xsd
 
 2. Most complex part: you need to implement class(es) to unmarshal your new element(s).
 All of them are more or less same. You can take as example any implementation from basic set: Hosts, Schedule and so on.
@@ -138,9 +138,10 @@ public class CustomSwitches extends AbstractSwitches {
 }
 ```
 
-Thats all. Now you can use SwitchesXMLLoader to load you configuration and use extended rule set:
+Thats all. Now you can use SwitchesXMLLoader to load you configuration and use extended rule set, e.g.:
 ```
-switches = new SwitchesXMLLoader().load(CustomSwitches.class, schema, xml);
+InputStream xml = ClassLoader.getSystemResourceAsStream("custom-switches.xml");
+Switches switches = new SwitchesXMLLoader(CustomSwitches.class, XMLSchemaLoader.fromSystemReource("custom-switches.xsd")).load(xml);
 ```
 Full example:
 https://github.com/Gmugra/net.cactusthorn.switches/blob/master/src/test/java/net/cactusthorn/switches/custom/CustomSwitchesTest.java
