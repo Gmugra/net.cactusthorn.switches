@@ -17,13 +17,11 @@ import net.cactusthorn.switches.SwitchParameter;
 import static net.cactusthorn.switches.SwitchParameter.*;
 import net.cactusthorn.switches.xml.SubnetAdapter;
 
-@XmlRootElement(name = "ip")
 @XmlAccessorType(XmlAccessType.NONE)
 class Ip extends Rule {
 	
 	private Ip() {}
-	
-	@XmlRootElement(name = "address")
+
 	@XmlAccessorType(XmlAccessType.NONE)
 	private static class IpAddress extends Rule {
 

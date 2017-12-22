@@ -9,8 +9,8 @@ import java.io.InputStream;
 import javax.xml.bind.JAXBException;
 
 import net.cactusthorn.switches.rules.Switches;
-import static net.cactusthorn.switches.SwitchParameter.ip;
 
+import static net.cactusthorn.switches.SwitchParameter.ip;
 
 public class DependenciesTest {
 	

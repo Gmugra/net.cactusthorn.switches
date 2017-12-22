@@ -3,13 +3,14 @@ package net.cactusthorn.switches;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import net.cactusthorn.switches.rules.Switches;
-
 import static org.junit.Assert.*;
 
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBException;
+
+import net.cactusthorn.switches.rules.Switches;
+
 
 public class ScheduleTest {
 	

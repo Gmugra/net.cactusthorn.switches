@@ -10,16 +10,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import net.cactusthorn.switches.SwitchParameter;
 
-@XmlRootElement(name = "dependencies")
 @XmlAccessorType(XmlAccessType.NONE)
 class Dependencies extends Rule {
 
 	private Dependencies() {}
 	
-	@XmlRootElement(name = "depends")
 	@XmlAccessorType(XmlAccessType.NONE)
 	private static class Depends extends Rule {
 		
@@ -55,7 +52,7 @@ class Dependencies extends Rule {
 	
 	//Unmarshal Event Callbacks : https://docs.oracle.com/javaee/6/api/javax/xml/bind/Unmarshaller.html
 	void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
-		String switchName = ((Switch)parent).name();
+		String switchName = ((BasicSwitch)parent).name();
 		dependsNames = depends.stream().filter(d -> !switchName.equals(d.switchName)).map(d -> d.switchName).collect(Collectors.toSet());
 	}
 }

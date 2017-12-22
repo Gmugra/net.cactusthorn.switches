@@ -7,19 +7,16 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import net.cactusthorn.switches.SwitchParameter;
 import net.cactusthorn.switches.xml.LocalDateTimeAdapter;
 
-@XmlRootElement(name = "schedule")
 @XmlAccessorType(XmlAccessType.NONE)
 class Schedule extends Rule {
 
 	private Schedule() {}
 	
-	@XmlRootElement(name = "timeinterval")
 	@XmlAccessorType(XmlAccessType.NONE)
 	private static class TimeInterval extends Rule {
 		

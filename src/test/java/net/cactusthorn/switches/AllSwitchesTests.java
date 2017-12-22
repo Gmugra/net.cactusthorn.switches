@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import net.cactusthorn.switches.custom.CustomSwitchesTest;
 import net.cactusthorn.switches.rules.RuleTest;
 
 @RunWith(Suite.class)
@@ -16,6 +17,7 @@ import net.cactusthorn.switches.rules.RuleTest;
 	IpTest.class,
 	DependenciesTest.class,
 	AlternativesTest.class,
-	AltogetherTest.class
+	AltogetherTest.class,
+	CustomSwitchesTest.class
 })
 public class AllSwitchesTests {}

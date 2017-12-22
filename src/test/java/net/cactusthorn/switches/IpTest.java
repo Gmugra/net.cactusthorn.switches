@@ -9,6 +9,7 @@ import java.io.InputStream;
 import javax.xml.bind.JAXBException;
 
 import net.cactusthorn.switches.rules.Switches;
+
 import static net.cactusthorn.switches.SwitchParameter.*;
 
 public class IpTest {

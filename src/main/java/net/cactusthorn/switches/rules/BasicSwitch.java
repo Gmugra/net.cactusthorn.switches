@@ -7,36 +7,34 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import net.cactusthorn.switches.SwitchParameter;
 
-@XmlRootElement(name = "switch")
 @XmlAccessorType(XmlAccessType.NONE)
-class Switch extends Rule {
+public class BasicSwitch extends Rule {
 	
-	private Switch() {}
+	protected BasicSwitch() {}
 
 	@XmlAttribute(name = "name")
-	private String name;
+	protected String name;
 	
 	@XmlAttribute(name = "on")
-	private boolean on;
+	protected boolean on;
 	
 	@XmlElement(name = "schedule")
-	private Schedule schedule;
+	protected Schedule schedule;
 	
 	@XmlElement(name = "ip")
-	private Ip ip;
+	protected Ip ip;
 	
 	@XmlElement(name = "hosts")
-	private Hosts hosts;
+	protected Hosts hosts;
 	
 	@XmlElement(name = "dependencies")
-	private Dependencies dependencies;
+	protected Dependencies dependencies;
 	
 	@XmlElement(name = "alternatives")
-	private Alternatives alternatives;
+	protected Alternatives alternatives;
 	
 	public String name() {
 		return name;
@@ -54,6 +52,7 @@ class Switch extends Rule {
 		return alternatives.alternatives();
 	}
 	
+	@Override
 	protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
 		if (!on) return false;

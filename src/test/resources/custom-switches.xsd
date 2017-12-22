@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xsd:element name="switches">
+		<xsd:complexType>
+			<xsd:choice minOccurs="1" maxOccurs="unbounded">
+				<xsd:element ref="switch"/>
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="switch">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="0" maxOccurs="1" ref="schedule"/>
+				<xsd:element minOccurs="0" maxOccurs="1" ref="ip"/>
+				<xsd:element minOccurs="0" maxOccurs="1" ref="hosts"/>
+				<xsd:element minOccurs="0" maxOccurs="1" ref="dependencies"/>
+				<xsd:element minOccurs="0" maxOccurs="1" ref="alternatives"/>
+				<xsd:element minOccurs="0" maxOccurs="1" ref="values"/><!-- extension in compare with "default" schema -->
+			</xsd:sequence>
+			<xsd:attribute name="name" type="xsd:string" use="required"/>
+			<xsd:attribute name="on" type="xsd:boolean" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="schedule">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="1" maxOccurs="unbounded" ref="timeinterval"/>
+			</xsd:sequence>
+			<xsd:attribute name="active" type="xsd:boolean" use="optional" default="true"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="timeinterval">
+		<xsd:complexType>
+			<xsd:attribute name="from" type="xsd:dateTime" use="optional"/>
+			<xsd:attribute name="to" type="xsd:dateTime" use="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="ip">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="0" maxOccurs="unbounded" ref="address"/>
+				<xsd:element minOccurs="0" maxOccurs="unbounded" ref="subnet"/>
+			</xsd:sequence>
+			<xsd:attribute name="active" type="xsd:boolean" use="optional" default="true"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="address">
+		<xsd:complexType>
+			<xsd:attribute name="ipv4" type="xsd:string" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="subnet">
+		<xsd:complexType>
+			<xsd:attribute name="ipv4mask" type="xsd:string" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="hosts">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="1" maxOccurs="unbounded" ref="host"/>
+			</xsd:sequence>
+			<xsd:attribute name="active" type="xsd:boolean" use="optional" default="true"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="host">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:string" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="dependencies">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="1" maxOccurs="unbounded" ref="depends"/>
+			</xsd:sequence>
+			<xsd:attribute name="active" type="xsd:boolean" use="optional" default="true"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="depends">
+		<xsd:complexType>
+			<xsd:attribute name="on" type="xsd:string" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="alternatives">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="1" maxOccurs="unbounded" ref="alternative"/>
+			</xsd:sequence>
+			<xsd:attribute name="active" type="xsd:boolean" use="optional" default="true"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="alternative">
+		<xsd:complexType>
+			<xsd:attribute name="to" type="xsd:string" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="values">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="1" maxOccurs="unbounded" ref="str"/>
+			</xsd:sequence>
+			<xsd:attribute name="active" type="xsd:boolean" use="optional" default="true"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="str">
+		<xsd:complexType>
+			<xsd:attribute name="value" type="xsd:string" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+	
+</xsd:schema>

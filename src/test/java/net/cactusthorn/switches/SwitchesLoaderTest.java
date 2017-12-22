@@ -1,12 +1,11 @@
 package net.cactusthorn.switches;
 
+import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBException;
-
-import org.junit.Test;
 
 import net.cactusthorn.switches.rules.Switches;
 

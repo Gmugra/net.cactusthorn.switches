@@ -1,4 +1,6 @@
-package net.cactusthorn.switches.rules;
+package net.cactusthorn.switches.custom;
+
+import static net.cactusthorn.switches.SwitchParameter.find;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -7,60 +9,60 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import net.cactusthorn.switches.SwitchParameter;
+import net.cactusthorn.switches.rules.Rule;
 
-import static net.cactusthorn.switches.SwitchParameter.*;
-
+@XmlRootElement(name = "values")
 @XmlAccessorType(XmlAccessType.NONE)
-class Hosts extends Rule {
+class Values extends Rule {
+
+	private Values() {}
 	
-	private Hosts() {}
-	
+	@XmlRootElement(name = "str")
 	@XmlAccessorType(XmlAccessType.NONE)
-	private static class Host extends Rule {
+	private static class Value extends Rule {
 		
-		private Host() {}
+		private Value() {}
 		
-		@XmlJavaTypeAdapter(value = RuleSplittedValueAdapter.class, type = SplittedValue.class)
-		@XmlAttribute(name = "name")
-		private SplittedValue host;
+		@XmlAttribute(name = "value")
+		private String value;
 		
 		@Override
 		protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 			
-			return find(HOST,parameters).filter(h -> compareWithWildcard((String)h.getValue(), host)).isPresent();
+			return find("value",parameters).filter(v -> value.equals(v.getValue())).isPresent();
 		}
 		
 		@Override
 		public String toString() {
-			return host.splitted.toString();
+			return value;
 		}
 
 		@Override
 		public int hashCode() {
-			return host.hashCode();
+			return value.hashCode();
 		}
 
 		@Override
 		public boolean equals(Object obj) {
 			if (obj == this) return true;
-			if (!(obj instanceof Host)) return false;
-			Host other = (Host) obj;
-			return host.equals(other.host);
+			if (!(obj instanceof Value)) return false;
+			Value other = (Value) obj;
+			return value.equals(other.value);
 		}
 	}
 	
 	@XmlAttribute(name = "active")
 	private boolean active = true;
 	
-	@XmlElement(name = "host")
-	private Set<Host> hosts;
-
+	@XmlElement(name = "str")
+	private Set<Value> strs;
+	
 	@Override
 	protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
-		return !active || hosts.stream().anyMatch(h -> h.active(currentDateTime, parameters) );
+		return !active || strs.stream().anyMatch(s -> s.active(currentDateTime, parameters) );
 	}
 }
