@@ -7,7 +7,7 @@ TODO
 
 Switches.xml basic example:
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <switches>
 
@@ -60,6 +60,52 @@ In simple words:
 
 ---
 
+# Dependencies
+
+Core idea that application component need to check _only one_ switch.
+All conditions about when switch is turned on must be part of the configuration.
+But rules are combined with **AND**, it's simple convention which is perfect fine for most of practical use cases.
+
+However, what to do if you need OR between rules? -> Split feature and use dependencies.
+Example:
+```xml
+<!-- "one" will be active if ip=127.0.0.1 AND hots=www.debian.org -->
+
+<switch name="one" on="true">
+	<ip>
+		<address ipv4="127.0.0.1"/>
+	</ip>
+	<hosts>
+		<host name="www.debian.org"/>
+	</hosts>
+</switch>
+```
+
+```xml
+<!-- "one" will be active if ip=127.0.0.1 OR hots=www.debian.org -->
+
+<switch name="one" on="true">
+	<dependencies>
+		<depends on="address"/>
+		<depends on="host"/>
+	</dependencies>
+</switch>
+
+<switch name="address" on="true">
+	<ip>
+		<address ipv4="127.0.0.1"/>
+	</ip>
+</switch>
+
+<switch name="host" on="true">
+	<hosts>
+		<host name="www.debian.org"/>
+	</hosts>
+</switch>
+```
+
+---
+
 # NOT
 In real live switches often are using as part of some other configuration(s).
 E.g. some application component is waiting some configuration property, annotation or whatever else with switch-name inside,
@@ -69,7 +115,7 @@ Some times you need to check that the switch is turned on, and some times that t
 To avoid unnearnessy "client" code and stupid additional properties, exist simple "NOT" notation:
 Exclamation character(!) as prefix of switch name.
 Example:
-```
+```java
 switches.turnedOn("first"); //return false
 
 switches.turnedOn("!first"); //return true
@@ -95,7 +141,7 @@ For the **custom-switches.xsd** implementation for the new element "values" is h
 https://github.com/Gmugra/net.cactusthorn.switches/blob/master/src/test/java/net/cactusthorn/switches/custom/Values.java
 
 3. Extend Switch class to support new rule(s). It's very simple. For the example it's looks like that:
-```
+```java
 package net.cactusthorn.switches.custom;
 
 import java.time.LocalDateTime;
@@ -108,7 +154,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import net.cactusthorn.switches.SwitchParameter;
 import net.cactusthorn.switches.rules.Switch;
 
-@XmlRootElement(name = "switch")
 @XmlAccessorType(XmlAccessType.NONE)
 public class CustomSwitch extends Switch {
 
@@ -129,7 +174,7 @@ public class CustomSwitch extends Switch {
 }
 ```
 4. Implement new child of AbstractSwitches which will use your new CustomSwitch:
-```
+```java
 package net.cactusthorn.switches.custom;
 
 import java.util.List;
@@ -159,7 +204,7 @@ public class CustomSwitches extends AbstractSwitches {
 ```
 
 Thats all. Now you can use SwitchesXMLLoader to load you configuration and use extended rule set, e.g.:
-```
+```java
 InputStream xml = ClassLoader.getSystemResourceAsStream("custom-switches.xml");
 Switches switches = new SwitchesXMLLoader(CustomSwitches.class, XMLSchemaLoader.fromSystemReource("custom-switches.xsd")).load(xml);
 ```
