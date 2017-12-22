@@ -54,6 +54,11 @@ class Alternatives extends Rule {
 	//Unmarshal Event Callbacks : https://docs.oracle.com/javaee/6/api/javax/xml/bind/Unmarshaller.html
 	void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
 		String switchName = ((BasicSwitch)parent).name();
-		alternativeNames = alternative.stream().filter(a -> !switchName.equals(a.switchName)).map(a -> a.switchName).collect(Collectors.toSet());
+		alternativeNames =
+			alternative.stream()
+				.filter(a -> !switchName.equals(a.switchName))
+				.map(a -> a.switchName.replaceAll("^[!]+", "").trim())
+				.filter(n -> !"!".equals(n))
+				.collect(Collectors.toSet());
 	}
 }

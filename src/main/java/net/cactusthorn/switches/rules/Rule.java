@@ -13,14 +13,10 @@ import net.cactusthorn.switches.SwitchParameter;
 public abstract class Rule {
 	
 	static final class RuleSplittedValueAdapter extends XmlAdapter<String,SplittedValue> {
-
-		@Override
-		public SplittedValue unmarshal(String value) throws Exception {
+		@Override public SplittedValue unmarshal(String value) throws Exception {
 			return new SplittedValue(value);
 		}
-
-		@Override
-		public String marshal(SplittedValue value) throws Exception {
+		@Override public String marshal(SplittedValue value) throws Exception {
 			return value.original;
 		}
 	}

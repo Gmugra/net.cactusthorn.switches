@@ -150,6 +150,18 @@
 			<depends on="simple"/>
 		</dependencies>
 	</switch>
+
+	<switch name="notSimple" on="true">
+		<dependencies>
+			<depends on="!simple"/>
+		</dependencies>
+	</switch>
+
+	<switch name="totallyNot" on="true">
+		<dependencies>
+			<depends on="!!!"/>
+		</dependencies>
+	</switch>
 	<!-- dependencies } -->
 
 	<!-- alternatives { -->

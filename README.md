@@ -106,13 +106,13 @@ Example:
 
 ---
 
-# NOT
+# "NOT" notation
 In real live switches often are using as part of some other configuration(s).
 E.g. some application component is waiting some configuration property, annotation or whatever else with switch-name inside,
-to check switch state and do the work "left or rigth way".
+to check switch state and do the work "left or rigth" way.
 
-Some times you need to check that the switch is turned on, and some times that the switch is NOT turned on.
-To avoid unnearnessy "client" code and stupid additional properties, exist simple "NOT" notation:
+Sometimes you need to check that the switch is turned on, and some times that the switch is NOT turned on.
+To avoid unnearnessy "client" code and switches configurations exist simple "NOT" notation:
 Exclamation character(!) as prefix of switch name.
 Example:
 ```java
@@ -123,6 +123,18 @@ switches.turnedOn("!first"); //return true
 ```
 It's simple convenient.
 Especially when you have several components which need to do work depends of _different_ state of the same switch.
+
+Also "NOT" notation is allowed for dependencies.
+Example:
+```xml
+<switch name="first" on="false"/>
+
+<switch name="itIsTurnedOn" on="true">
+	<dependencies>
+		<depends on="!first"/>
+	</dependencies>
+</switch>
+```
 
 ---
 

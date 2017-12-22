@@ -57,4 +57,14 @@ public class DependenciesTest {
 	public void myself() {
 		assertTrue(switches.turnedOn("myself"));
 	}
+	
+	@Test
+	public void notSimple() {
+		assertFalse(switches.turnedOn("notSimple"));
+	}
+	
+	@Test
+	public void totallyNot() {
+		assertTrue(switches.turnedOn("totallyNot"));
+	}
 }

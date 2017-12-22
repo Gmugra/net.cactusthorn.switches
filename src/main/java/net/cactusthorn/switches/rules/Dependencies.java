@@ -53,6 +53,11 @@ class Dependencies extends Rule {
 	//Unmarshal Event Callbacks : https://docs.oracle.com/javaee/6/api/javax/xml/bind/Unmarshaller.html
 	void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
 		String switchName = ((BasicSwitch)parent).name();
-		dependsNames = depends.stream().filter(d -> !switchName.equals(d.switchName)).map(d -> d.switchName).collect(Collectors.toSet());
+		dependsNames =
+			depends.stream()
+				.filter(d -> !switchName.equals(d.switchName))
+				.map(d -> d.switchName.replaceAll("^[!]{2,}", "!").trim())
+				.filter(n -> !"!".equals(n))
+				.collect(Collectors.toSet());
 	}
 }

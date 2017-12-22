@@ -23,16 +23,14 @@ public abstract class AbstractSwitches implements Switches {
 	@Override
 	public boolean turnedOn(final String switchName, final SwitchParameter<?>... parameters ) {
 		
-		boolean $not = false;
-		String name = switchName;
-		if (switchName.indexOf('!') == 0 ) {
-			$not = true;
-			name = switchName.substring(1);
-		}
-		
 		LocalDateTime currentDateTime = LocalDateTime.now();
-		boolean on = turnedOn(name, currentDateTime, parameters);
-		return $not ? !on : on;
+		return turnedOnWithNot(switchName, currentDateTime, parameters);
+	}
+	
+	protected boolean turnedOnWithNot(final String switchName, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters ) {
+		String name = switchName;
+		if (switchName.indexOf('!') == 0 ) name = switchName.substring(1);
+		return !name.equals(switchName) ^ turnedOn(name, currentDateTime, parameters);
 	}
 	
 	protected boolean turnedOn(final String switchName, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters ) {
@@ -53,13 +51,15 @@ public abstract class AbstractSwitches implements Switches {
 	
 		Set<String> dependenciesNames = $switch.dependencies();
 		if (dependenciesNames.isEmpty() ) return true;
-		return dependenciesNames.stream().anyMatch(d -> turnedOn(d, currentDateTime, parameters) );
+		
+		return dependenciesNames.stream().anyMatch(d -> turnedOnWithNot(d, currentDateTime, parameters));
 	}
 	
 	protected boolean activeAlternative(BasicSwitch $switch, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
 		Set<String> alternativeNames = $switch.alternatives();
 		if (alternativeNames.isEmpty() ) return false;
-		return alternativeNames.stream().anyMatch(a -> turnedOn(a, currentDateTime, parameters));
+		return alternativeNames.stream().anyMatch(a -> turnedOnWithNot(a, currentDateTime, parameters));
 	}
+	
 }

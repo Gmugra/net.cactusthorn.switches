@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import net.cactusthorn.switches.SwitchParameter;
 
@@ -14,7 +16,17 @@ import net.cactusthorn.switches.SwitchParameter;
 public class BasicSwitch extends Rule {
 	
 	protected BasicSwitch() {}
+	
+	static final class BasicSwitchNameAdapter extends XmlAdapter<String,String> {
+		@Override public String unmarshal(String value) throws Exception {
+			return value.replaceAll("^[!]+", "").trim();
+		}
+		@Override public String marshal(String value) throws Exception {
+			return value;
+		}
+	}
 
+	@XmlJavaTypeAdapter(value = BasicSwitchNameAdapter.class, type = String.class)
 	@XmlAttribute(name = "name")
 	protected String name;
 	
