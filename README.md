@@ -60,6 +60,26 @@ In simple words:
 
 ---
 
+# NOT
+In real live switches often are using as part of some other configuration(s).
+E.g. some application component is waiting some configuration property, annotation or whatever else with switch-name inside,
+to check switch state and do the work "left or rigth way".
+
+Some times you need to check that the switch is turned on, and some times that the switch is NOT turned on.
+To avoid unnearnessy "client" code and stupid additional properties, exist simple "NOT" notation:
+Exclamation character(!) as prefix of switch name.
+Example:
+```
+switches.turnedOn("first"); //return false
+
+switches.turnedOn("!first"); //return true
+
+```
+It's simple convenient.
+Especially when you have several components which need to do work depends of _different_ state of the same switch.
+
+---
+
 # Customization
 
 Supported rule set is basic. You sure need to extend it. To support rules based on HTTP schema, LDAP user roles, or whatever else.

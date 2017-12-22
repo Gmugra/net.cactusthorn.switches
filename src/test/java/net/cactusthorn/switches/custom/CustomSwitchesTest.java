@@ -34,4 +34,9 @@ public class CustomSwitchesTest {
 	public void notAltogether() {
 		assertFalse(switches.turnedOn("altogether", of("value","superVALUE?"), host("www.debian.org"), ip("127.55.0.1")));
 	}
+	
+	@Test
+	public void existsFirst() {
+		assertTrue(switches.exists("first"));
+	}
 }

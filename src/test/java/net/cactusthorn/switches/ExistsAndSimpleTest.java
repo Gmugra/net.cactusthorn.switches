@@ -44,4 +44,14 @@ public class ExistsAndSimpleTest {
 	public void first() {
 		assertFalse(switches.turnedOn("first"));
 	}
+	
+	@Test
+	public void notFirst() {
+		assertTrue(switches.turnedOn("!first"));
+	}
+	
+	@Test
+	public void existsWithNot() {
+		assertTrue(switches.exists("!first"));
+	}
 }

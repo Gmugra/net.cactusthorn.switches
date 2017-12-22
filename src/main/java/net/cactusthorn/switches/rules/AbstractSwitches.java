@@ -13,14 +13,26 @@ public abstract class AbstractSwitches implements Switches {
 	
 	@Override
 	public boolean exists(final String switchName ) {
-		return getSwitches().stream().anyMatch(s -> switchName.equals(s.name()));
+		
+		String name = switchName;
+		if (switchName.indexOf('!') == 0 ) name = switchName.substring(1);
+			
+		return getSwitches().stream().map(s -> s.name()).anyMatch(name::equals);
 	}
 	
 	@Override
 	public boolean turnedOn(final String switchName, final SwitchParameter<?>... parameters ) {
 		
+		boolean $not = false;
+		String name = switchName;
+		if (switchName.indexOf('!') == 0 ) {
+			$not = true;
+			name = switchName.substring(1);
+		}
+		
 		LocalDateTime currentDateTime = LocalDateTime.now();
-		return turnedOn(switchName, currentDateTime, parameters);
+		boolean on = turnedOn(name, currentDateTime, parameters);
+		return $not ? !on : on;
 	}
 	
 	protected boolean turnedOn(final String switchName, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters ) {
