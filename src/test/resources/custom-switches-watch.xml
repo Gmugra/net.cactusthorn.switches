@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<switches>
+
+	<switch name="first" on="false"/>
+
+	<switch name="simple" on="true"/>
+
+	<switch name="altogether" on="true">
+		<schedule>
+			<timeinterval from="2010-03-03T00:00:00" to="2050-03-03T00:00:00" />
+		</schedule>
+		<ip>
+			<address ipv4="127.*.0.1"/>
+			<subnet ipv4mask="10.1.1.0/24"/>
+		</ip>
+		<hosts>
+			<host name="wikipedia.org"/>
+			<host name="wikipedia.org"/>
+			<host name="*.wikipedia.org"/>
+			<host name="www.debian.org"/>
+		</hosts>
+		<dependencies>
+			<depends on="simple"/>
+		</dependencies>
+		<alternatives>
+			<alternative to="first"/>
+		</alternatives>
+		<values>
+			<str value="superVALUE"/>
+		</values>
+	</switch>
+
+</switches>

@@ -1,6 +1,9 @@
 package net.cactusthorn.switches;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -42,5 +45,11 @@ public class SwitchesXMLLoader {
 		Unmarshaller unmarshaller = context.createUnmarshaller();
 		unmarshaller.setSchema(switchesSchema );
 		return (S) unmarshaller.unmarshal(xml);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <S extends Switches> S load(Path xmlFile) throws JAXBException, IOException {
+
+		return (S) load(Files.newInputStream(xmlFile ));
 	}
 }

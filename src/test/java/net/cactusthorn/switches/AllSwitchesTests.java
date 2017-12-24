@@ -18,6 +18,7 @@ import net.cactusthorn.switches.rules.RuleTest;
 	DependenciesTest.class,
 	AlternativesTest.class,
 	AltogetherTest.class,
-	CustomSwitchesTest.class
+	CustomSwitchesTest.class,
+	WatchSwitchesTest.class
 })
 public class AllSwitchesTests {}

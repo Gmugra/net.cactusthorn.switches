@@ -2,14 +2,28 @@ package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.xml.bind.Unmarshaller;
 
 import net.cactusthorn.switches.SwitchParameter;
 
 public abstract class AbstractSwitches implements Switches {
 	
+	protected ConcurrentHashMap<String, BasicSwitch> switchesMap = new ConcurrentHashMap<>();
+	
 	protected abstract List<? extends BasicSwitch> getSwitches();
+	
+	//Unmarshal Event Callbacks : https://docs.oracle.com/javaee/6/api/javax/xml/bind/Unmarshaller.html
+	void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
+		getSwitches().forEach(s -> switchesMap.put(s.name(), s));
+	}
+	
+	void updateBy(AbstractSwitches switches) {
+		switches.switchesMap.entrySet().forEach(e -> switchesMap.put(e.getKey(), e.getValue()));
+		switchesMap.keySet().retainAll(switches.switchesMap.keySet());
+	}
 	
 	@Override
 	public boolean exists(final String switchName ) {
@@ -17,7 +31,7 @@ public abstract class AbstractSwitches implements Switches {
 		String name = switchName;
 		if (switchName.indexOf('!') == 0 ) name = switchName.substring(1);
 			
-		return getSwitches().stream().map(s -> s.name()).anyMatch(name::equals);
+		return switchesMap.containsKey(name);
 	}
 	
 	@Override
@@ -35,16 +49,16 @@ public abstract class AbstractSwitches implements Switches {
 	
 	protected boolean turnedOn(final String switchName, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters ) {
 		
-		Optional<? extends BasicSwitch> $switch = getSwitches().stream().filter(s -> switchName.equals(s.name())).findFirst();
-		if (!$switch.isPresent()) return false;
+		BasicSwitch $switch = switchesMap.get(switchName);
+		if ($switch == null) return false;
 		
 		//any one dependency must be turned on
-		if (!activeDependency($switch.get(), currentDateTime, parameters) ) return false;
+		if (!activeDependency($switch, currentDateTime, parameters) ) return false;
 		
 		//no one alternative must be turned on
-		if (activeAlternative($switch.get(), currentDateTime, parameters) ) return false;
+		if (activeAlternative($switch, currentDateTime, parameters) ) return false;
 		
-		return $switch.get().active(currentDateTime, parameters );
+		return $switch.active(currentDateTime, parameters );
 	}
 	
 	protected boolean activeDependency(BasicSwitch $switch, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
