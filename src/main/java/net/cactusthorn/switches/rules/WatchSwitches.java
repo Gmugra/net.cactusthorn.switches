@@ -18,7 +18,7 @@ import net.cactusthorn.switches.SwitchParameter;
 import net.cactusthorn.switches.SwitchesXMLLoader;
 
 //must be final, because can start the thread in the constructor
-public final class WatchSwitches implements Runnable, Switches {
+public final class WatchSwitches<S extends BasicSwitch> implements Runnable, Switches {
 	
 	private final WatchService watchService = FileSystems.getDefault().newWatchService();
 	private final Thread thread;
@@ -26,7 +26,7 @@ public final class WatchSwitches implements Runnable, Switches {
 	private long lastTimeStamp;
 	private final Path parentDirecctory;
 	private final SwitchesXMLLoader loader;
-	private final AbstractSwitches switches;
+	private final AbstractSwitches<S> switches;
 	
 	public WatchSwitches(Path xmlPath, SwitchesXMLLoader loader) throws IOException, JAXBException {
 		
@@ -122,7 +122,7 @@ public final class WatchSwitches implements Runnable, Switches {
 	
 	private void reload(WatchEvent<?> event) {
 		
-		AbstractSwitches newSwitches;
+		AbstractSwitches<S> newSwitches;
 		try {
 			newSwitches = loader.load(xmlPath);
 		} catch (JAXBException | IOException e ) {

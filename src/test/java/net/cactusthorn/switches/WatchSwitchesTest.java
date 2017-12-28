@@ -3,6 +3,7 @@ package net.cactusthorn.switches;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import net.cactusthorn.switches.custom.CustomSwitch;
 import net.cactusthorn.switches.custom.CustomSwitches;
 import net.cactusthorn.switches.rules.WatchSwitches;
 
@@ -23,14 +24,14 @@ public class WatchSwitchesTest {
 	@Test
 	public void first() throws URISyntaxException, IOException, JAXBException, InterruptedException, SAXException {
 		
-		Path xml = Paths.get(WatchSwitchesTest.class.getClassLoader().getResource("custom-switches-watch.xml").toURI());
-		Path xmlFalse = Paths.get(WatchSwitchesTest.class.getClassLoader().getResource("custom-switches-watch-false.xml").toURI());
-		Path xmlTrue = Paths.get(WatchSwitchesTest.class.getClassLoader().getResource("custom-switches-watch-true.xml").toURI());
+		Path xml = Paths.get(getClass().getClassLoader().getResource("custom-switches-watch.xml").toURI());
+		Path xmlFalse = Paths.get(getClass().getClassLoader().getResource("custom-switches-watch-false.xml").toURI());
+		Path xmlTrue = Paths.get(getClass().getClassLoader().getResource("custom-switches-watch-true.xml").toURI());
 		Files.copy(xmlFalse, xml, StandardCopyOption.REPLACE_EXISTING );
 	
 		Schema schema = XMLSchemaLoader.fromSystemReource("custom-switches.xsd");
 		SwitchesXMLLoader loader = new SwitchesXMLLoader(CustomSwitches.class, schema);
-		WatchSwitches ws = new WatchSwitches(xml, loader );
+		WatchSwitches<CustomSwitch> ws = new WatchSwitches<>(xml, loader );
 		
 		assertFalse(ws.turnedOn("first"));
 		

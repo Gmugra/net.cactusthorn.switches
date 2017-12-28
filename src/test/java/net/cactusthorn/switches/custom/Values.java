@@ -20,24 +20,13 @@ class Values extends Rule {
 	@XmlAccessorType(XmlAccessType.NONE)
 	private static class Value extends Rule {
 		
-		private Value() {}
+		@XmlAttribute(name = "value") private String value;
 		
-		@XmlAttribute(name = "value")
-		private String value;
-		
-		@Override
-		protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
-			
+		@Override protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 			return find("value",parameters).filter(v -> value.equals(v.getValue())).isPresent();
 		}
-		
-		@Override
-		public String toString() {
-			return value;
-		}
 
-		@Override
-		public int hashCode() {
+		@Override public int hashCode() {
 			return value.hashCode();
 		}
 

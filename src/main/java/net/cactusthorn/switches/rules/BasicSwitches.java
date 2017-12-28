@@ -9,15 +9,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "switches")
 @XmlAccessorType(XmlAccessType.NONE)
-public class BasicSwitches extends AbstractSwitches {
+public class BasicSwitches extends AbstractSwitches<BasicSwitch> {
 
 	private BasicSwitches() {}
 	
-	@XmlElement(name = "switch")
-	private List<BasicSwitch> switches;
+	@XmlElement(name = "switch") private List<BasicSwitch> switches;
 	
-	@Override
-	protected List<? extends BasicSwitch> getSwitches() {
+	@Override protected List<BasicSwitch> switches() {
 		return switches;
 	}
 }

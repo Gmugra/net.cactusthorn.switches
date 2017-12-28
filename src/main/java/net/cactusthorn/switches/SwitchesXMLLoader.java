@@ -39,7 +39,7 @@ public class SwitchesXMLLoader {
 	
 	@SuppressWarnings("unchecked")
 	public <S extends Switches> S load(InputStream xml) throws JAXBException {
-		
+
 		JAXBContext context = JAXBContext.newInstance(switchesClazz);
 		
 		Unmarshaller unmarshaller = context.createUnmarshaller();

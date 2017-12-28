@@ -52,21 +52,18 @@ public abstract class Rule {
 			splitted = Collections.unmodifiableList(parts);
 		}
 
-		@Override
-		public String toString() {
+		@Override public String toString() {
 			return splitted.toString();
 		}
 
-		@Override 
-		public boolean equals(Object obj) {
+		@Override public boolean equals(Object obj) {
 			if (obj == this) return true;
 			if (!(obj instanceof SplittedValue)) return false;
 			SplittedValue other = (SplittedValue) obj;
 			return original.equals(other.original);
 		}
 
-		@Override
-		public int hashCode() {
+		@Override public int hashCode() {
 			return original.hashCode();
 		}
 	}

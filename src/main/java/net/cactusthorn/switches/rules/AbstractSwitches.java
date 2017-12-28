@@ -9,18 +9,18 @@ import javax.xml.bind.Unmarshaller;
 
 import net.cactusthorn.switches.SwitchParameter;
 
-public abstract class AbstractSwitches implements Switches {
+public abstract class AbstractSwitches<S extends BasicSwitch> implements Switches {
 	
-	protected ConcurrentHashMap<String, BasicSwitch> switchesMap = new ConcurrentHashMap<>();
+	protected ConcurrentHashMap<String, S> switchesMap = new ConcurrentHashMap<>();
 	
-	protected abstract List<? extends BasicSwitch> getSwitches();
+	protected abstract List<S> switches();
 	
 	//Unmarshal Event Callbacks : https://docs.oracle.com/javaee/6/api/javax/xml/bind/Unmarshaller.html
 	void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
-		getSwitches().forEach(s -> switchesMap.put(s.name(), s));
+		switches().forEach(s -> switchesMap.put(s.name(), s));
 	}
 	
-	void updateBy(AbstractSwitches switches) {
+	void updateBy(AbstractSwitches<S> switches) {
 		switches.switchesMap.entrySet().forEach(e -> switchesMap.put(e.getKey(), e.getValue()));
 		switchesMap.keySet().retainAll(switches.switchesMap.keySet());
 	}
@@ -49,7 +49,7 @@ public abstract class AbstractSwitches implements Switches {
 	
 	protected boolean turnedOn(final String switchName, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters ) {
 		
-		BasicSwitch $switch = switchesMap.get(switchName);
+		S $switch = switchesMap.get(switchName);
 		if ($switch == null) return false;
 		
 		//any one dependency must be turned on
@@ -61,7 +61,7 @@ public abstract class AbstractSwitches implements Switches {
 		return $switch.active(currentDateTime, parameters );
 	}
 	
-	protected boolean activeDependency(BasicSwitch $switch, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+	protected boolean activeDependency(S $switch, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 	
 		Set<String> dependenciesNames = $switch.dependencies();
 		if (dependenciesNames.isEmpty() ) return true;
@@ -69,7 +69,7 @@ public abstract class AbstractSwitches implements Switches {
 		return dependenciesNames.stream().anyMatch(d -> turnedOnWithNot(d, currentDateTime, parameters));
 	}
 	
-	protected boolean activeAlternative(BasicSwitch $switch, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+	protected boolean activeAlternative(S $switch, final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 		
 		Set<String> alternativeNames = $switch.alternatives();
 		if (alternativeNames.isEmpty() ) return false;

@@ -15,23 +15,18 @@ import net.cactusthorn.switches.xml.LocalDateTimeAdapter;
 @XmlAccessorType(XmlAccessType.NONE)
 class Schedule extends Rule {
 
-	private Schedule() {}
-	
 	@XmlAccessorType(XmlAccessType.NONE)
 	private static class TimeInterval extends Rule {
 		
-		private TimeInterval() {}
-
-		@XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class, type = LocalDateTime.class)
+		@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
 		@XmlAttribute(name = "from")
 		private LocalDateTime from;
 		
-		@XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class, type = LocalDateTime.class)
+		@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
 		@XmlAttribute(name = "to")
 		private LocalDateTime to;
 		
-		@Override
-		protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+		@Override protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 			
 			if (from != null && currentDateTime.isBefore(from) ) {
 				return false;
@@ -41,14 +36,8 @@ class Schedule extends Rule {
 			}
 			return true;
 		}
-		
-		@Override
-		public String toString() {
-			return from + " : " + to;
-		}
 
-		@Override
-		public int hashCode() {
+		@Override public int hashCode() {
 			final int PRIME = 59;
 			int result = 1;
 			result = (result*PRIME) + (from == null?0:from.hashCode());
@@ -56,8 +45,7 @@ class Schedule extends Rule {
 			return result;
 		}
 
-		@Override
-		public boolean equals(Object obj) {
+		@Override public boolean equals(Object obj) {
 			if (obj == this) return true;
 			if (!(obj instanceof TimeInterval)) return false;
 			TimeInterval other = (TimeInterval) obj;

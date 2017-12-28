@@ -161,13 +161,12 @@ import java.time.LocalDateTime;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import net.cactusthorn.switches.SwitchParameter;
-import net.cactusthorn.switches.rules.Switch;
+import net.cactusthorn.switches.rules.BasicSwitch;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class CustomSwitch extends Switch {
+public class CustomSwitch extends BasicSwitch {
 
 	@XmlElement(name = "values")
 	private Values values;
@@ -197,11 +196,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import net.cactusthorn.switches.rules.AbstractSwitches;
-import net.cactusthorn.switches.rules.Switch;
 
 @XmlRootElement(name = "switches")
 @XmlAccessorType(XmlAccessType.NONE)
-public class CustomSwitches extends AbstractSwitches {
+public class CustomSwitches extends AbstractSwitches<CustomSwitch> {
 
 	private CustomSwitches() {}
 
@@ -209,7 +207,7 @@ public class CustomSwitches extends AbstractSwitches {
 	private List<CustomSwitch> switches;
 
 	@Override
-	protected List<? extends Switch> getSwitches() {
+	protected List<CustomSwitch> switches() {
 		return switches;
 	}
 }
@@ -222,6 +220,18 @@ Switches switches = new SwitchesXMLLoader(CustomSwitches.class, XMLSchemaLoader.
 ```
 Full example:
 https://github.com/Gmugra/net.cactusthorn.switches/blob/master/src/test/java/net/cactusthorn/switches/custom/CustomSwitchesTest.java
+
+# WatchSwitches
+
+Implementation which run Thread with WatchService to, on the fly, upload changes when the source file changed
+  * https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchService.html
+
+```java
+Path xml = Paths.get("/switches/switches.xml");
+Schema schema = XMLSchemaLoader.fromSystemReource("custom-switches.xsd");
+SwitchesXMLLoader loader = new SwitchesXMLLoader(CustomSwitches.class, schema);
+WatchSwitches<CustomSwitch> ws = new WatchSwitches<>(xml, loader );
+```
 
 # License
 

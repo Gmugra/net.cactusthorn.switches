@@ -20,35 +20,23 @@ import net.cactusthorn.switches.xml.SubnetAdapter;
 @XmlAccessorType(XmlAccessType.NONE)
 class Ip extends Rule {
 	
-	private Ip() {}
-
 	@XmlAccessorType(XmlAccessType.NONE)
 	private static class IpAddress extends Rule {
 
-		private IpAddress() {}
-		
-		@XmlJavaTypeAdapter(value = RuleSplittedValueAdapter.class, type = SplittedValue.class)
+		@XmlJavaTypeAdapter(RuleSplittedValueAdapter.class)
 		@XmlAttribute(name = "ipv4")
 		private SplittedValue ipv4;
 		
-		@Override
-		public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+		@Override public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 			
 			return find(IP,parameters).filter(ip -> compareWithWildcard((String)ip.getValue(), ipv4)).isPresent();
 		}
 		
-		@Override
-		public String toString() {
-			return ipv4.splitted.toString();
-		}
-
-		@Override
-		public int hashCode() {
+		@Override public int hashCode() {
 			return ipv4.hashCode();
 		}
 
-		@Override
-		public boolean equals(Object obj) {
+		@Override public boolean equals(Object obj) {
 			if (obj == this) return true;
 			if (!(obj instanceof IpAddress)) return false;
 			IpAddress other = (IpAddress) obj;
@@ -62,7 +50,7 @@ class Ip extends Rule {
 		
 		private IpSubnet() {}
 		
-		@XmlJavaTypeAdapter(value = SubnetAdapter.class, type = SubnetUtils.SubnetInfo.class)
+		@XmlJavaTypeAdapter(SubnetAdapter.class)
 		@XmlAttribute(name = "ipv4mask")
 		private SubnetUtils.SubnetInfo subnetInfo;
 		

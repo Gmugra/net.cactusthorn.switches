@@ -8,11 +8,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import net.cactusthorn.switches.rules.AbstractSwitches;
-import net.cactusthorn.switches.rules.BasicSwitch;
 
 @XmlRootElement(name = "switches")
 @XmlAccessorType(XmlAccessType.NONE)
-public class CustomSwitches extends AbstractSwitches {
+public class CustomSwitches extends AbstractSwitches<CustomSwitch> {
 
 	private CustomSwitches() {}
 		
@@ -20,7 +19,7 @@ public class CustomSwitches extends AbstractSwitches {
 	private List<CustomSwitch> switches;
 		
 	@Override
-	protected List<? extends BasicSwitch> getSwitches() {
+	protected List<CustomSwitch> switches() {
 		return switches;
 	}
 }

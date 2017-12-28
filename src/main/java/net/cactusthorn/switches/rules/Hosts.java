@@ -16,35 +16,23 @@ import static net.cactusthorn.switches.SwitchParameter.*;
 @XmlAccessorType(XmlAccessType.NONE)
 class Hosts extends Rule {
 	
-	private Hosts() {}
-	
 	@XmlAccessorType(XmlAccessType.NONE)
 	private static class Host extends Rule {
 		
-		private Host() {}
-		
-		@XmlJavaTypeAdapter(value = RuleSplittedValueAdapter.class, type = SplittedValue.class)
+		@XmlJavaTypeAdapter(RuleSplittedValueAdapter.class)
 		@XmlAttribute(name = "name")
 		private SplittedValue host;
 		
-		@Override
-		protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+		@Override protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 			
 			return find(HOST,parameters).filter(h -> compareWithWildcard((String)h.getValue(), host)).isPresent();
 		}
-		
-		@Override
-		public String toString() {
-			return host.splitted.toString();
-		}
 
-		@Override
-		public int hashCode() {
+		@Override public int hashCode() {
 			return host.hashCode();
 		}
 
-		@Override
-		public boolean equals(Object obj) {
+		@Override public boolean equals(Object obj) {
 			if (obj == this) return true;
 			if (!(obj instanceof Host)) return false;
 			Host other = (Host) obj;

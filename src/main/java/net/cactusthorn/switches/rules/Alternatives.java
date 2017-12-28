@@ -16,18 +16,12 @@ import net.cactusthorn.switches.SwitchParameter;
 @XmlAccessorType(XmlAccessType.NONE)
 class Alternatives extends Rule {
 
-	private Alternatives() {}
-	
 	@XmlAccessorType(XmlAccessType.NONE)
 	private static class Alternative extends Rule {
 		
-		private Alternative() {}
-		
-		@XmlAttribute(name = "to")
-		private String switchName;
+		@XmlAttribute(name = "to") private String switchName;
 
-		@Override
-		public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
+		@Override public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 			throw new UnsupportedOperationException();
 		}
 	}
