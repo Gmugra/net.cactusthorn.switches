@@ -1,15 +1,17 @@
 package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.ValidationException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import net.cactusthorn.switches.SwitchParameter;
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -25,12 +27,27 @@ class Dependencies extends Rule {
 		}
 	}
 	
+	static final class DependsNamesAdapter extends XmlAdapter<Depends,String> {
+		@Override public String unmarshal(Depends value) throws Exception {
+			String switchName = value.switchName.replaceAll("^[!]{2,}", "!").trim();
+			if ("!".equals(switchName) || "".equals(switchName)) {
+				//as far ValidationEventHandler is not set for Unmarshaller, exception is hidden during processing
+				throw new ValidationException("not allowed");
+			}
+			return switchName;
+		}
+		@Override public Depends marshal(String value) throws Exception {
+			Depends depends = new Depends();
+			depends.switchName = value;
+			return depends;
+		}
+	}
+	
 	@XmlAttribute(name = "active")
 	private boolean active = true;
 	
+	@XmlJavaTypeAdapter(DependsNamesAdapter.class)
 	@XmlElement(name = "depends")
-	private List<Depends> depends;
-	
 	private Set<String> dependsNames;
 
 	@Override
@@ -46,12 +63,9 @@ class Dependencies extends Rule {
 	
 	//Unmarshal Event Callbacks : https://docs.oracle.com/javaee/6/api/javax/xml/bind/Unmarshaller.html
 	void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
-		String switchName = ((BasicSwitch)parent).name();
-		dependsNames =
-			depends.stream()
-				.filter(d -> !switchName.equals(d.switchName))
-				.map(d -> d.switchName.replaceAll("^[!]{2,}", "!").trim())
-				.filter(n -> !"!".equals(n))
-				.collect(Collectors.toSet());
+		if (dependsNames != null ) {
+			String switchName = ((BasicSwitch)parent).name();
+			dependsNames.remove(switchName);
+		}
 	}
 }

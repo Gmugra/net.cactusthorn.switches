@@ -1,15 +1,16 @@
 package net.cactusthorn.switches.rules;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.ValidationException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import net.cactusthorn.switches.SwitchParameter;
 
@@ -26,12 +27,27 @@ class Alternatives extends Rule {
 		}
 	}
 	
+	static final class AlternativeNamesAdapter extends XmlAdapter<Alternative,String> {
+		@Override public String unmarshal(Alternative value) throws Exception {
+			String switchName = value.switchName.replaceAll("^[!]+", "").trim();
+			if ("".equals(switchName)) {
+				//as far ValidationEventHandler is not set for Unmarshaller, exception is hidden during processing
+				throw new ValidationException("not allowed");
+			}
+			return switchName;
+		}
+		@Override public Alternative marshal(String value) throws Exception {
+			Alternative depends = new Alternative();
+			depends.switchName = value;
+			return depends;
+		}
+	}
+	
 	@XmlAttribute(name = "active")
 	private boolean active = true;
 	
+	@XmlJavaTypeAdapter(AlternativeNamesAdapter.class)
 	@XmlElement(name = "alternative")
-	private List<Alternative> alternative;
-	
 	private Set<String> alternativeNames;
 
 	@Override
@@ -47,12 +63,9 @@ class Alternatives extends Rule {
 
 	//Unmarshal Event Callbacks : https://docs.oracle.com/javaee/6/api/javax/xml/bind/Unmarshaller.html
 	void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
-		String switchName = ((BasicSwitch)parent).name();
-		alternativeNames =
-			alternative.stream()
-				.filter(a -> !switchName.equals(a.switchName))
-				.map(a -> a.switchName.replaceAll("^[!]+", "").trim())
-				.filter(n -> !"!".equals(n))
-				.collect(Collectors.toSet());
+		if (alternativeNames != null ) {
+			String switchName = ((BasicSwitch)parent).name();
+			alternativeNames.remove(switchName);
+		}
 	}
 }
