@@ -70,17 +70,11 @@ public class BasicSwitch extends Rule {
 		if (!on) return false;
 		
 		//currentDateTime can not be null here
-		if (schedule != null && !schedule.active(currentDateTime)) {
-			return false;
-		}
+		if (schedule != null && !schedule.active(currentDateTime)) return false;
 		
-		if (ip != null && !ip.active(currentDateTime, parameters ) ) {
-			return false;
-		}
+		if (ip != null && !ip.active(currentDateTime, parameters)) return false;
 		
-		if (hosts != null && !hosts.active(currentDateTime, parameters ) ) {
-			return false;
-		}
+		if (hosts != null && !hosts.active(currentDateTime, parameters)) return false;
 		
 		return true;
 	}

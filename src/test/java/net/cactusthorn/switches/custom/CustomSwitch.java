@@ -20,9 +20,7 @@ public class CustomSwitch extends BasicSwitch {
 		
 		if (!super.active(currentDateTime, parameters)) return false;
 		
-		if (values != null && !values.active(currentDateTime, parameters ) ) {
-			return false;
-		}
+		if (values != null && !values.active(currentDateTime, parameters)) return false;
 		
 		return true;
 	}

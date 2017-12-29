@@ -152,7 +152,7 @@ All of them are more or less same. You can take as example any implementation fr
 For the **custom-switches.xsd** implementation for the new element "values" is here:
 https://github.com/Gmugra/net.cactusthorn.switches/blob/master/src/test/java/net/cactusthorn/switches/custom/Values.java
 
-3. Extend Switch class to support new rule(s). It's very simple. For the example it's looks like that:
+3. Extend BasicSwitch class to support new rule(s). For the example it's looks like that:
 ```java
 package net.cactusthorn.switches.custom;
 
@@ -173,13 +173,8 @@ public class CustomSwitch extends BasicSwitch {
 
 	@Override
 	protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
-
 		if (!super.active(currentDateTime, parameters)) return false;
-
-		if (values != null && !values.active(currentDateTime, parameters ) ) {
-			return false;
-		}
-
+		if (values != null && !values.active(currentDateTime, parameters)) return false;
 		return true;
 	}
 }
