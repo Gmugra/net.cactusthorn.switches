@@ -70,6 +70,8 @@ public abstract class Rule {
 	
 	protected final static boolean compareWithWildcard(String source, SplittedValue masked) {
 		
+		if (source == null) return false;
+		
 		if (source.equals(masked.original)) return true;
 		
 		if (source.indexOf('.') == -1 || masked.original.indexOf('*') == -1) return false; 

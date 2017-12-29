@@ -42,4 +42,9 @@ public class SwitchParameter<T> extends SimpleEntry<String,T> {
 		}
 		return Optional.empty();
 	}
+	
+	public String stringValue() {
+		Object value = getValue();
+		return value != null ? value.toString() : null;
+	}
 }

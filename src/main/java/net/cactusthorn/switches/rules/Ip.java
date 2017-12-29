@@ -27,9 +27,13 @@ class Ip extends Rule {
 		@XmlAttribute(name = "ipv4")
 		private SplittedValue ipv4;
 		
+		private boolean check(SwitchParameter<?> parameter) {
+			return compareWithWildcard(parameter.stringValue(), ipv4);
+		}
+		
 		@Override public boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 			
-			return find(IP,parameters).filter(ip -> compareWithWildcard((String)ip.getValue(), ipv4)).isPresent();
+			return find(IP,parameters).filter(this::check).isPresent();
 		}
 		
 		@Override public int hashCode() {
@@ -54,9 +58,13 @@ class Ip extends Rule {
 		@XmlAttribute(name = "ipv4mask")
 		private SubnetUtils.SubnetInfo subnetInfo;
 		
+		private boolean check(SwitchParameter<?> parameter) {
+			return subnetInfo.isInRange(parameter.stringValue());
+		}
+		
 		@Override
 		protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
-			return find(IP,parameters).filter(ip -> subnetInfo.isInRange((String)ip.getValue())).isPresent();
+			return find(IP,parameters).filter(this::check).isPresent();
 		}
 		
 		@Override

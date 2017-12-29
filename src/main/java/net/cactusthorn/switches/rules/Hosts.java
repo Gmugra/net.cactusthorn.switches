@@ -23,9 +23,13 @@ class Hosts extends Rule {
 		@XmlAttribute(name = "name")
 		private SplittedValue host;
 		
+		private boolean check(SwitchParameter<?> parameter) {
+			return compareWithWildcard(parameter.stringValue(), host);
+		}
+		
 		@Override protected boolean active(final LocalDateTime currentDateTime, final SwitchParameter<?>... parameters) {
 			
-			return find(HOST,parameters).filter(h -> compareWithWildcard((String)h.getValue(), host)).isPresent();
+			return find(HOST,parameters).filter(this::check).isPresent();
 		}
 
 		@Override public int hashCode() {
