@@ -1,6 +1,8 @@
 package net.cactusthorn.switches;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.xml.sax.SAXException;
 
 import net.cactusthorn.switches.custom.CustomSwitch;
@@ -20,6 +22,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.validation.Schema;
 
 public class WatchSwitchesTest {
+	
+	@Rule
+	public final SystemOutRule systemOutRule = new SystemOutRule().enableLog().muteForSuccessfulTests();
 
 	@Test
 	public void first() throws URISyntaxException, IOException, JAXBException, InterruptedException, SAXException {

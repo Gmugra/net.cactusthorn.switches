@@ -20,21 +20,27 @@ import net.cactusthorn.switches.SwitchesXMLLoader;
 //must be final, because can start the thread in the constructor
 public final class WatchSwitches<S extends BasicSwitch> implements Runnable, Switches {
 	
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(WatchSwitches.class);
+	
 	private final WatchService watchService = FileSystems.getDefault().newWatchService();
 	private final Thread thread;
 	private final Path xmlPath;
 	private long lastTimeStamp;
-	private final Path parentDirecctory;
+	private final Path parentDirectory;
 	private final SwitchesXMLLoader loader;
 	private final AbstractSwitches<S> switches;
 	
 	public WatchSwitches(Path xmlPath, SwitchesXMLLoader loader) throws IOException, JAXBException {
 		
+		if (xmlPath == null ) throw new IOException("xmlPath MUST not be null!");
+		
 		this.xmlPath = xmlPath;
 		this.lastTimeStamp = xmlPath.toFile().lastModified();
 		
-		parentDirecctory = this.xmlPath.getParent();
-		parentDirecctory.register(watchService, ENTRY_CREATE, ENTRY_MODIFY);
+		parentDirectory = this.xmlPath.getParent();
+		if (parentDirectory == null ) throw new IOException("parentDirectory is null, xmlPath: " + xmlPath);
+		
+		parentDirectory.register(watchService, ENTRY_CREATE, ENTRY_MODIFY);
 		
 		this.loader = loader;
 		
@@ -58,6 +64,9 @@ public final class WatchSwitches<S extends BasicSwitch> implements Runnable, Swi
 	}
 	
 	@Override public void run() {
+		
+		log.info("Watch switches configuration file: {}", xmlPath);
+		
 		while (true) {
 
 			// wait for key to be signaled
@@ -65,6 +74,7 @@ public final class WatchSwitches<S extends BasicSwitch> implements Runnable, Swi
 			try {
 				key = watchService.take();
 			} catch (InterruptedException ie) {
+				log.warn("WatchSwitches thread Interrupted.");
 				return;
 			}
 			
@@ -73,6 +83,7 @@ public final class WatchSwitches<S extends BasicSwitch> implements Runnable, Swi
 			// reset the key - this step is critical if you want to receive further watch events. 
 			// If the key is no longer valid, the directory is inaccessible so exit the loop.             
 			if (!key.reset()) {
+				log.error("WatchKey is not longer valid!");
 				return;
 			}
 		}
@@ -95,7 +106,7 @@ public final class WatchSwitches<S extends BasicSwitch> implements Runnable, Swi
 		if (fileName.indexOf('.') == 0 || !fileName.endsWith(".xml") ) return false;
 	
 		//is it directory or not, size and lastModified we will know only after resolve
-		Path resolvedPath = parentDirecctory.resolve((Path) event.context());
+		Path resolvedPath = parentDirectory.resolve((Path) event.context());
 		File resolvedFile = resolvedPath.toFile();
 		
 		if (resolvedFile.isDirectory() ) return false;
@@ -112,8 +123,10 @@ public final class WatchSwitches<S extends BasicSwitch> implements Runnable, Swi
 		//lets check that lastModified is new to avoid unnecessary work 		
 		long newTime = resolvedFile.lastModified();
 		if (newTime != lastTimeStamp ) {
+			log.debug("event for the file: {} not skipped, because newTime({}) != lastTimeStamp({})", fileName, newTime, lastTimeStamp);
 			lastTimeStamp = newTime;
 		} else {
+			log.debug("event for the file: {} skipped, because lastModified is same as before", fileName);
 			return false;
 		}
 
@@ -126,10 +139,11 @@ public final class WatchSwitches<S extends BasicSwitch> implements Runnable, Swi
 		try {
 			newSwitches = loader.load(xmlPath);
 		} catch (JAXBException | IOException e ) {
-			e.printStackTrace();
+			log.error("reload switches configuration file is failed.", e );
 			return;
 		}
 		
 		switches.updateBy(newSwitches);
+		log.info("Switches configuration file {} succefully reloaded.", xmlPath );
 	}
 }
